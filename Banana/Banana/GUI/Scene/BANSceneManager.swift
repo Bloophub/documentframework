@@ -7,55 +7,9 @@
 
 import UIKit
 
-enum BANActivityIdentifier: String {
-    case document          = "document"
-    case file_browser      = "file_browser"
-    case preferences       = "preferences"
-    case alert_window      = "alert_window"
-
-    func sceneConfiguration() -> UISceneConfiguration {
-        switch self {
-        case .document:
-            return UISceneConfiguration(
-                name: BANSceneConfiguration.document_config.rawValue,
-                sessionRole: .windowApplication
-            )
-        case .file_browser:
-            return UISceneConfiguration(
-                name: BANSceneConfiguration.default_config.rawValue,
-                sessionRole: .windowApplication
-            )
-        case .preferences:
-            return UISceneConfiguration(
-                name: BANSceneConfiguration.preferences_config.rawValue,
-                sessionRole: .windowApplication
-            )
-        case .alert_window:
-            return UISceneConfiguration(
-                name: BANSceneConfiguration.alert_config.rawValue,
-                sessionRole: .windowApplication
-            )
-        }
-    }
-}
-
-
-enum BANSceneConfiguration: String{
-    case alert_config           = "Alert Configuration"
-    case document_config        = "Document Configuration"
-//    case new_document_config    = "New Document Configuration"
-    case default_config         = "Default Configuration"
-    case preferences_config     = "Preferences Configuration"
-}
-
-enum BANSceneKeys: String{
-    case doc_url            = "doc_url"
-    case open_url           = "open_url"
-    
-}
 //https://gist.github.com/steipete/40a367b64b57bfd0b44fa8d158fc016c
 @MainActor
-class BANSceneManager {
+open class BANSceneManager {
 
     static func get_app_file_types() -> [String] {
         return []
@@ -92,7 +46,7 @@ class BANSceneManager {
     }
 
     private static func open_preferences_scene(_ vc: UIViewController?, _ errorHandler: ((Error) -> Void)? = nil){
-        if let vcx = vc, !Platform.isCatalyst {
+        if let vcx = vc, !BANPlatform.isCatalyst {
             let pref    = BANPreferenceUITableViewController( style: .insetGrouped)
             let nav     = UINavigationController(rootViewController: pref)
             vcx.present(nav,animated: true)
@@ -150,7 +104,7 @@ class BANSceneManager {
     
     
     static func show_pref_menu(_ vc: UIViewController? = nil) {
-        if Platform.isCatalyst {
+        if BANPlatform.isCatalyst {
             open_preferences_scene(nil)
             return
         }

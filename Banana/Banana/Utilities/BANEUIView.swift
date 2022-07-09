@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIView{
-    @objc func all_sub_views() -> [UIView]{
+    @objc public func all_sub_views() -> [UIView]{
         var ret : [UIView] = []
         for sub_view in subviews{
             ret.append(sub_view)
@@ -18,32 +18,32 @@ extension UIView{
         }
         return ret;
     }
-    func hide_view(){
+    public func hide_view(){
         if self.isHidden == false {
             self.isHidden = true
         }
     }
-    func show_view(){
+    public func show_view(){
         if self.isHidden == true {
             self.isHidden = false
         }
     }
-    func hide(_ hide: Bool = true){
+    public func hide(_ hide: Bool = true){
         if self.isHidden != hide {
             self.isHidden = hide
         }
     }
     
-    func show(_ show: Bool = true){
+    public func show(_ show: Bool = true){
         hide(!show)
     }
     
-    func removeLayerAnimationsRecursively() {
+    public func removeLayerAnimationsRecursively() {
         layer.removeAllAnimations()
         subviews.forEach { $0.removeLayerAnimationsRecursively() }
     }
     
-    func setAnchorPoint(anchorPoint: CGPoint) {
+    public func setAnchorPoint(anchorPoint: CGPoint) {
         let view = self
         var newPoint = CGPoint(x:view.bounds.size.width * anchorPoint.x, y:view.bounds.size.height * anchorPoint.y)
         var oldPoint = CGPoint(x:view.bounds.size.width * view.layer.anchorPoint.x, y:view.bounds.size.height * view.layer.anchorPoint.y)
@@ -64,7 +64,7 @@ extension UIView{
 
 }
 extension UIView{
-    private func safe_layout() -> UILayoutGuide? {
+    public func safe_layout() -> UILayoutGuide? {
         guard let super_view = self.superview else {
             //ALog.log_warn("missing superview safe_layout")
             return nil
@@ -76,7 +76,7 @@ extension UIView{
         return super_view.safeAreaLayoutGuide
     }
     
-    @discardableResult func util_align(top : CGFloat? = nil,
+    @discardableResult public func util_align(top : CGFloat? = nil,
                                        bottom: CGFloat? = nil,
                                        left: CGFloat? = nil,
                                        right: CGFloat? = nil,
@@ -137,7 +137,7 @@ extension UIView{
         return ret
     }
     
-    @objc func util_fill_superview(){
+    @objc public func util_fill_superview(){
         guard let safe = safe_layout() else {
             return
         }
@@ -147,7 +147,7 @@ extension UIView{
         centerYAnchor.constraint(equalTo: safe.centerYAnchor, constant: 0).isActive = true
     }
 
-    @discardableResult @objc func util_align_center_x_anchor(pixel: CGFloat = 0) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_align_center_x_anchor(pixel: CGFloat = 0) -> NSLayoutConstraint?{
         guard let safe = safe_layout() else {
             return nil
         }
@@ -156,7 +156,7 @@ extension UIView{
         return a
     }
     
-    @discardableResult @objc func util_align_center_y_anchor(pixel: CGFloat = 0) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_align_center_y_anchor(pixel: CGFloat = 0) -> NSLayoutConstraint?{
         guard let safe = safe_layout() else {
             return nil
         }
@@ -165,7 +165,7 @@ extension UIView{
         return a
     }
     
-    @discardableResult @objc func util_fill_height_anchor(safe_area: Bool = true) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_fill_height_anchor(safe_area: Bool = true) -> NSLayoutConstraint?{
         if !safe_area {
             guard let super_view = self.superview else {
                 //ALog.log_warn("missing superview")
@@ -184,7 +184,7 @@ extension UIView{
         return a
     }
     
-    @discardableResult @objc func util_fill_width_anchor() -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_fill_width_anchor() -> NSLayoutConstraint?{
         guard let safe = safe_layout() else {
             return nil
         }
@@ -193,7 +193,7 @@ extension UIView{
         return a
     }
     
-    @discardableResult @objc func  util_fill_width_anchor(safe_area: Bool = true) -> NSLayoutConstraint?{
+    @discardableResult @objc public func  util_fill_width_anchor(safe_area: Bool = true) -> NSLayoutConstraint?{
         if !safe_area {
             guard let super_view = self.superview else {
                 //ALog.log_warn("missing superview util_fill_width_anchor")
@@ -213,7 +213,7 @@ extension UIView{
     }
 
     
-    @discardableResult @objc func util_align_bottom_anchor(pixel : CGFloat, safe_area: Bool = true) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_align_bottom_anchor(pixel : CGFloat, safe_area: Bool = true) -> NSLayoutConstraint?{
         if !safe_area {
             guard let super_view = self.superview else {
                 ////ALog.log_warn("missing superview util_align_bottom_anchor")
@@ -234,7 +234,7 @@ extension UIView{
     }
     
     
-    @discardableResult @objc func util_align_top_anchor(pixel : CGFloat, safe_area: Bool = true) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_align_top_anchor(pixel : CGFloat, safe_area: Bool = true) -> NSLayoutConstraint?{
         if !safe_area {
             guard let super_view = self.superview else {
                 //ALog.log_warn("missing superview util_align_top_anchor")
@@ -253,7 +253,7 @@ extension UIView{
         return a
     }
     
-    @discardableResult @objc func util_align_left_anchor(pixel : CGFloat, safe_area: Bool = true) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_align_left_anchor(pixel : CGFloat, safe_area: Bool = true) -> NSLayoutConstraint?{
         if !safe_area {
             guard let super_view = self.superview else {
                 //ALog.log_warn("missing superview util_align_left_anchor")
@@ -272,7 +272,7 @@ extension UIView{
         return a
     }
     
-    @discardableResult @objc func util_align_right_anchor(pixel : CGFloat, safe_area: Bool = true) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_align_right_anchor(pixel : CGFloat, safe_area: Bool = true) -> NSLayoutConstraint?{
         if !safe_area {
             guard let super_view = self.superview else {
                 //ALog.log_warn("missing superview util_align_right_anchor")
@@ -291,42 +291,42 @@ extension UIView{
         return a
     }
     
-    @discardableResult @objc func util_height_anchor(pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_height_anchor(pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = heightAnchor.constraint(equalToConstant: pixel)
         a.isActive = true
         return a
     }
     
-    @discardableResult @objc func util_height_anchor_less_than(pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_height_anchor_less_than(pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = heightAnchor.constraint(lessThanOrEqualToConstant: pixel)
         a.isActive = true
         return a
     }
     
-    @discardableResult @objc func util_width_anchor(pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_width_anchor(pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = widthAnchor.constraint(equalToConstant: pixel)
         a.isActive = true
         return a
     }
 
-    @discardableResult @objc func util_width_anchor_less_than(pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_width_anchor_less_than(pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = widthAnchor.constraint(lessThanOrEqualToConstant: pixel)
         a.isActive = true
         return a
     }
     
-    @discardableResult @objc func util_width_anchor_greater_than(pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_width_anchor_greater_than(pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = widthAnchor.constraint(greaterThanOrEqualToConstant: pixel)
         a.isActive = true
         return a
     }
 
-    @discardableResult @objc func util_align_top_anchor_to_bottom_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_align_top_anchor_to_bottom_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = topAnchor.constraint(equalTo: view.bottomAnchor, constant: pixel)
         a.isActive = true
@@ -340,14 +340,14 @@ extension UIView{
         return a
     }
 
-    @discardableResult @objc func util_align_top_anchor_to_top_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_align_top_anchor_to_top_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = topAnchor.constraint(equalTo: view.topAnchor, constant: pixel)
         a.isActive = true
         return a
     }
     
-    @discardableResult @objc func util_align_bottom_anchor_to_top_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_align_bottom_anchor_to_top_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = bottomAnchor.constraint(equalTo: view.topAnchor, constant: pixel)
         a.isActive = true
@@ -361,7 +361,7 @@ extension UIView{
         return a
     }
     
-    @discardableResult @objc func util_align_right_anchor_to_right_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_align_right_anchor_to_right_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = rightAnchor.constraint(equalTo: view.rightAnchor, constant: pixel)
         a.isActive = true
@@ -369,28 +369,28 @@ extension UIView{
     }
     
     
-    @discardableResult @objc func util_align_left_anchor_to_right_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_align_left_anchor_to_right_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = leftAnchor.constraint(equalTo: view.rightAnchor, constant: pixel)
         a.isActive = true
         return a
     }
     
-    @discardableResult @objc func util_align_left_anchor_to_left_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
+    @discardableResult @objc public func util_align_left_anchor_to_left_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = leftAnchor.constraint(equalTo: view.leftAnchor, constant: pixel)
         a.isActive = true
         return a
     }
     
-    @discardableResult @objc func util_align_center_x_anchor_to_center_x_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_align_center_x_anchor_to_center_x_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint?{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: pixel)
         a.isActive = true
         return a
     }
     
-    @discardableResult @objc func util_align_center_y_anchor_to_center_y_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint?{
+    @discardableResult @objc public func util_align_center_y_anchor_to_center_y_of_view(view: UIView, pixel : CGFloat) -> NSLayoutConstraint?{
         translatesAutoresizingMaskIntoConstraints = false
         let a : NSLayoutConstraint = centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: pixel)
         a.isActive = true
@@ -399,7 +399,7 @@ extension UIView{
 }
 
 extension UIView {
-func setShadowWithCornerRadius(corners : CGFloat){
+    public func setShadowWithCornerRadius(corners : CGFloat){
         self.layer.cornerRadius = corners
         let shadowPath2             = UIBezierPath(rect: self.bounds)
         self.layer.masksToBounds    = false

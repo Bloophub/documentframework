@@ -11,8 +11,7 @@ import WebKit
 import UniformTypeIdentifiers
 
 extension String {
-    var URLEncoded:String {
-
+    public var URLEncoded:String {
         let unreservedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
         let unreservedCharsSet: CharacterSet = CharacterSet(charactersIn: unreservedChars)
         let encodedString = self.addingPercentEncoding(withAllowedCharacters: unreservedCharsSet)!
@@ -20,19 +19,19 @@ extension String {
     }
 }
 
-extension BinaryInteger {
-    var isEven: Bool { isMultiple(of: 2) }
-    var isOdd:  Bool { !isEven }
-}
+//extension BinaryInteger {
+//    var isEven: Bool { isMultiple(of: 2) }
+//    var isOdd:  Bool { !isEven }
+//}
 
 extension UIColor{
-    func image(_ size: CGSize = CGSize(width: 16, height: 16)) -> UIImage {
+    public func image(_ size: CGSize = CGSize(width: 16, height: 16)) -> UIImage {
         return UIGraphicsImageRenderer(size: size).image { rendererContext in
             self.setFill()
             rendererContext.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height))
         }
     }
-    func colorWith(brightness: CGFloat) -> UIColor{
+    public func colorWith(brightness: CGFloat) -> UIColor{
         var r:CGFloat = 0, g:CGFloat = 0, b:CGFloat = 0, a:CGFloat = 0
         
         if getRed(&r, green: &g, blue: &b, alpha: &a){
@@ -40,7 +39,7 @@ extension UIColor{
         }
         return UIColor()
     }
-    static var random: UIColor {
+    public static var random: UIColor {
         return UIColor(red: .random(in: 0...1),
                        green: .random(in: 0...1),
                        blue: .random(in: 0...1),
@@ -49,7 +48,7 @@ extension UIColor{
 }
 
 extension Bundle {
-    var app_name: String {
+    public var app_name: String {
         guard let dictionary = Bundle.main.infoDictionary else {
             return ""
         }
@@ -59,89 +58,97 @@ extension Bundle {
             return ""
         }
     }
-    var releaseVersionNumber: String? {
+    public var releaseVersionNumber: String? {
         return infoDictionary?["CFBundleShortVersionString"] as? String
     }
-    var buildVersionNumber: String? {
+    public var buildVersionNumber: String? {
         return infoDictionary?["CFBundleVersion"] as? String
     }
-    
+    public var app_iconx: UIImage? {
+        if let icons = infoDictionary?["CFBundleIcons"] as? [String: Any],
+            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
+            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
+            let lastIcon = iconFiles.last {
+            return UIImage(named: lastIcon)
+        }
+        return nil
+    }
 }
 
-struct Platform {
-    static var isSimulator: Bool {
+public struct BANPlatform {
+    public static var isSimulator: Bool {
         return TARGET_OS_SIMULATOR != 0
     }
-    static var isiOS: Bool {
+    public static var isiOS: Bool {
         return TARGET_OS_IOS != 0
     }
-    static var isCatalyst: Bool{
+    public static var isCatalyst: Bool{
         #if targetEnvironment(macCatalyst)
             return true
         #else
             return false
         #endif
     }
-    static var isMac: Bool{
+    public static var isMac: Bool{
         return UIDevice.current.userInterfaceIdiom == .mac //catalyst ios app run on m1 notebook
     }
-    static var isPad: Bool{
+    public static var isPad: Bool{
         return UIDevice.current.userInterfaceIdiom == .pad
     }
-    static var isPhone: Bool{
+    public static var isPhone: Bool{
         return UIDevice.current.userInterfaceIdiom != .pad && isCatalyst == false && isiOS == true
     }
     
-    static var hasSceneSupport: Bool {
+    public static var hasSceneSupport: Bool {
         return UIApplication.shared.supportsMultipleScenes
     }
     
-    static var isNotMac: Bool {
+    public static var isNotMac: Bool {
         return UIDevice.current.userInterfaceIdiom == .pad || UIDevice.current.userInterfaceIdiom == .phone
     }
 
 }
 
-public extension UIView {
-
-/**
- Fade in a view with a duration
- 
- - parameter duration: custom animation duration
- */
-    func fadeIn(duration: TimeInterval = 1.0, alphaLevel: CGFloat = 1) {
-     UIView.animate(withDuration: duration, animations: {
-        self.alpha = alphaLevel
-     })
- }
-
-/**
- Fade out a view with a duration
- 
- - parameter duration: custom animation duration
- */
-    func fadeOut(duration: TimeInterval = 1.0) {
-        UIView.animate(withDuration: duration, animations: {
-            self.alpha = 0.0
-        })
-      }
-    
-    func fadeOut(duration: TimeInterval = 1.0, alphaLevel: CGFloat = 1) {
-        UIView.animate(withDuration: duration, animations: {
-            self.alpha = alphaLevel
-        })
-      }
-
-}
+//public extension UIView {
+//
+///**
+// Fade in a view with a duration
+//
+// - parameter duration: custom animation duration
+// */
+//    func fadeIn(duration: TimeInterval = 1.0, alphaLevel: CGFloat = 1) {
+//     UIView.animate(withDuration: duration, animations: {
+//        self.alpha = alphaLevel
+//     })
+// }
+//
+///**
+// Fade out a view with a duration
+//
+// - parameter duration: custom animation duration
+// */
+//    func fadeOut(duration: TimeInterval = 1.0) {
+//        UIView.animate(withDuration: duration, animations: {
+//            self.alpha = 0.0
+//        })
+//      }
+//
+//    func fadeOut(duration: TimeInterval = 1.0, alphaLevel: CGFloat = 1) {
+//        UIView.animate(withDuration: duration, animations: {
+//            self.alpha = alphaLevel
+//        })
+//      }
+//
+//}
 
 extension Array {
-    subscript (safe index: Index) -> Element? {
+    public subscript (safe index: Index) -> Element? {
         return 0 <= index && index < count ? self[index] : nil
     }
 }
 
 extension URLFileResourceType: Codable {
-    func get_Name(_ type: String) -> String {
+    public func get_Name(_ type: String) -> String {
         switch URLFileResourceType.init(rawValue: type) {
             
         case .directory:
@@ -155,72 +162,72 @@ extension URLFileResourceType: Codable {
     }
  }
 
-@IBDesignable open class PaddingLabel: UILabel {
-    
-    @IBInspectable open var topInset: CGFloat = 5.0
-    @IBInspectable open var bottomInset: CGFloat = 5.0
-    @IBInspectable open var leftInset: CGFloat = 7.0
-    @IBInspectable open var rightInset: CGFloat = 7.0
-    
-    open override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
-        super.drawText(in: rect.inset(by: insets))
-    }
-    
-    open override var intrinsicContentSize: CGSize {
-        let size = super.intrinsicContentSize
-        return CGSize(width: size.width + leftInset + rightInset,
-                      height: size.height + topInset + bottomInset)
-    }
-    
-    open override var bounds: CGRect {
-        didSet {
-            // Supported Multiple Lines in Stack views
-//            preferredMaxLayoutWidth = bounds.width - (leftInset + rightInset)
-        }
-    }
-}
+//@IBDesignable open class PaddingLabel: UILabel {
+//
+//    @IBInspectable open var topInset: CGFloat = 5.0
+//    @IBInspectable open var bottomInset: CGFloat = 5.0
+//    @IBInspectable open var leftInset: CGFloat = 7.0
+//    @IBInspectable open var rightInset: CGFloat = 7.0
+//
+//    open override func drawText(in rect: CGRect) {
+//        let insets = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+//        super.drawText(in: rect.inset(by: insets))
+//    }
+//
+//    open override var intrinsicContentSize: CGSize {
+//        let size = super.intrinsicContentSize
+//        return CGSize(width: size.width + leftInset + rightInset,
+//                      height: size.height + topInset + bottomInset)
+//    }
+//
+//    open override var bounds: CGRect {
+//        didSet {
+//            // Supported Multiple Lines in Stack views
+////            preferredMaxLayoutWidth = bounds.width - (leftInset + rightInset)
+//        }
+//    }
+//}
 
-extension NSObject {
-    static func util_mt(_ block: @escaping (()->())) {
-        if Thread.isMainThread {
-            block()
-        } else {
-            DispatchQueue.main.async {
-                block()
-            }
-        }
-    }
-    static func util_mt_wait(_ block: @escaping (()->())) {
-        if Thread.isMainThread == false {
-            let semaphore = DispatchSemaphore(value: 0);
-            DispatchQueue.main.async {
-                block()
-                semaphore.signal();
-            }
-            semaphore.wait()
-        } else {
-            block()
-        }
-    }
-}
+//extension NSObject {
+//    public static func util_mt(_ block: @escaping (()->())) {
+//        if Thread.isMainThread {
+//            block()
+//        } else {
+//            DispatchQueue.main.async {
+//                block()
+//            }
+//        }
+//    }
+//    public static func util_mt_wait(_ block: @escaping (()->())) {
+//        if Thread.isMainThread == false {
+//            let semaphore = DispatchSemaphore(value: 0);
+//            DispatchQueue.main.async {
+//                block()
+//                semaphore.signal();
+//            }
+//            semaphore.wait()
+//        } else {
+//            block()
+//        }
+//    }
+//}
 
 
 extension Array {
-    func chunks(_ chunkSize: UInt) -> [[Element]] {
+    public func chunks(_ chunkSize: UInt) -> [[Element]] {
         let cs = Int(chunkSize)
         return stride(from: 0, to: self.count, by: cs).map {
             Array(self[$0..<Swift.min($0 + cs, self.count)])
         }
     }
-    mutating func remove (at ixs:[Int]) -> () {
+    public mutating func remove (at ixs:[Int]) -> () {
         for i in ixs.sorted(by: >) {
             self.remove(at:i)
         }
     }
 }
 extension Array where Element: AnyObject {
-    @discardableResult mutating func remove(where predicate: (Array.Iterator.Element) -> Bool) -> Bool {
+    @discardableResult public mutating func remove(where predicate: (Array.Iterator.Element) -> Bool) -> Bool {
         if let index = self.firstIndex(where: { (element) -> Bool in
             return predicate(element)
         }) {
@@ -229,21 +236,21 @@ extension Array where Element: AnyObject {
         }
         return false
     }
-    mutating func remove(object: AnyObject) {
+    public mutating func remove(object: AnyObject) {
         if let index = firstIndex(where: { $0 as AnyObject? === object }) {
             remove(at: index)
         }else{
             ALog.log_verbose("cannot find \(object)")
         }
     }
-    mutating func remove(objects: [AnyObject]) {
+    public mutating func remove(objects: [AnyObject]) {
         for object in objects{
             remove(object: object)
         }
     }
 }
 extension Sequence where Iterator.Element: Hashable {
-    func unique() -> [Iterator.Element] {
+    public func unique() -> [Iterator.Element] {
         var seen: [Iterator.Element: Bool] = [:]
         return self.filter { seen.updateValue(true, forKey: $0) == nil }
     }
@@ -256,21 +263,21 @@ extension Sequence where Iterator.Element: Hashable {
     }
 }
 extension Collection {
-    func insertionIndex(of element: Self.Iterator.Element,
+    public func insertionIndex(of element: Self.Iterator.Element,
                         using areInIncreasingOrder: (Self.Iterator.Element, Self.Iterator.Element) -> Bool) -> Index {
         return firstIndex(where: { !areInIncreasingOrder($0, element) }) ?? endIndex
     }
 }
 
 extension Array where Element: Equatable{
-    mutating func util_move(_ element: Element, to newIndex: Index) {
+    public mutating func util_move(_ element: Element, to newIndex: Index) {
         if let oldIndex: Int = self.firstIndex(of: element) { self.util_move(from: oldIndex, to: newIndex) }
     }
 }
 
 extension Array
 {
-    mutating func util_move(from oldIndex: Index, to newIndex: Index) {
+    public mutating func util_move(from oldIndex: Index, to newIndex: Index) {
         // Don't work for free and use swap when indices are next to each other - this
         // won't rebuild array and will be super efficient.
         if oldIndex == newIndex { return }
@@ -280,7 +287,7 @@ extension Array
 }
 
 extension Date {
-    var dayOfYear: Int {
+    public var dayOfYear: Int {
         return Calendar.current.ordinality(of: .day, in: .year, for: self)!
     }
 }
@@ -295,14 +302,14 @@ extension Date {
 //}
 
 extension Data {
-    func hexEncodedString() -> String {
+    public func hexEncodedString() -> String {
         return map { String(format: "%02hhx", $0) }.joined()
     }
 }
 
 
 extension Dictionary {
-    var prettyPrintedJSON: String? {
+    public var prettyPrintedJSON: String? {
         do {
             let data: Data = try JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
             return String(data: data, encoding: .utf8)
@@ -315,7 +322,7 @@ extension Dictionary {
 
 extension String {
 
-    func fromBase64() -> String? {
+    public func fromBase64() -> String? {
         guard let data = Data(base64Encoded: self) else {
             return nil
         }
@@ -323,7 +330,7 @@ extension String {
         return String(data: data, encoding: .utf8)
     }
 
-    func toBase64() -> String {
+    public func toBase64() -> String {
         return Data(self.utf8).base64EncodedString()
     }
 
@@ -333,37 +340,37 @@ extension String {
 import MobileCoreServices
 
 extension URL {
-    var mimeType: String {
+    public var mimeType: String {
         return UTType(filenameExtension: self.pathExtension)?.preferredMIMEType ?? "application/octet-stream"
     }
     
-    var getUTType: UTType? {
+    public var getUTType: UTType? {
         if self.lastPathComponent.contains(".") == false {
             return .directory
         }
         return UTType(filenameExtension: self.pathExtension)
     }
     
-    func contains(_ uttype: UTType) -> Bool {
+    public func contains(_ uttype: UTType) -> Bool {
         return UTType(mimeType: self.mimeType)?.conforms(to: uttype) ?? false
     }
-    var containsImage: Bool {
+    public var containsImage: Bool {
         return self.contains(.image)
     }
-    var containsAudio: Bool {
+    public var containsAudio: Bool {
         return self.contains(.audio)
     }
-    var containsVideo: Bool {
+    public var containsVideo: Bool {
         return self.contains(.video)
     }
-    var containsArchive: Bool {
+    public var containsArchive: Bool {
         return self.contains(.archive)
     }
-    var isTextBased: Bool {
+    public var isTextBased: Bool {
         return getUTType?.isSubtype(of: .text) ?? false
     }
     
-    var getType: UTType {
+    public var getType: UTType {
         return self.getUTType ?? .item
     }
     
@@ -398,7 +405,7 @@ extension UIAlertController {
 }
 
 extension UIApplication {
-    class func get_key_window() -> UIWindow?{
+    public class func get_key_window() -> UIWindow?{
         let keyWindow = UIApplication.shared.connectedScenes
                 .filter({$0.activationState == .foregroundActive})
                 .compactMap({$0 as? UIWindowScene})
@@ -410,7 +417,7 @@ extension UIApplication {
 }
 
 extension UIResponder {
-    func responderChain() -> String {
+    public func responderChain() -> String {
         func desc_self() -> String{
             return xclassName + ":\(self.isFirstResponder)\n"
         }
@@ -422,17 +429,6 @@ extension UIResponder {
     }
 }
 
-extension Bundle {
-    public var app_iconx: UIImage? {
-        if let icons = infoDictionary?["CFBundleIcons"] as? [String: Any],
-            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
-            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
-            let lastIcon = iconFiles.last {
-            return UIImage(named: lastIcon)
-        }
-        return nil
-    }
-}
 
 extension Error {
     var code: Int { return (self as NSError).code }

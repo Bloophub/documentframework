@@ -9,31 +9,31 @@
 import UIKit
 
 //https://www.techotopia.com/index.php/Managing_Files_using_the_iOS_8_UIDocument_Class
-class BANDocument: UIDocument {
+open class BANDocument: UIDocument {
     
     private var contentx = ""
-    func update_content(_ html: String){
+    public func update_content(_ html: String){
         contentx = html
         self.updateChangeCount(.done)
     }
     
-    func get_content() -> String{
+    public func get_content() -> String{
         return contentx
     }
     
-    override func autosave(completionHandler: ((Bool) -> Void)? = nil) {
+    override public func autosave(completionHandler: ((Bool) -> Void)? = nil) {
         super.autosave(completionHandler: completionHandler)
     }
     
     //WRITING
-    override func contents(forType typeName: String) throws -> Any { //data package
+    override public func contents(forType typeName: String) throws -> Any { //data package
         // Encode your document with an instance of NSData or NSFileWrapper
         let data = contentx.data(using: .utf8) as Any
         return data
     }
     
     //READING
-    override func load(fromContents contents: Any, ofType typeName: String?) throws {
+    override public func load(fromContents contents: Any, ofType typeName: String?) throws {
         // Load your document from contents
         //ALog.log_verbose("load")
         guard let data = contents as? Data else { return }

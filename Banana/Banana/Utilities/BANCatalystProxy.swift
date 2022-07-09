@@ -9,9 +9,10 @@ import Foundation
 import UIKit
 import Dynamic
 
-class BANCatalystProxy {
+#if targetEnvironment(macCatalyst)
+public class BANCatalystProxy {
 
-    @discardableResult static func intercept_window_close_button(_ window: UIWindow?) -> Bool{
+    @discardableResult public static func intercept_window_close_button(_ window: UIWindow?) -> Bool{
         guard let windowx = window, let nsWindowx = windowx.nsWindow else {
             return false
         }
@@ -24,7 +25,7 @@ class BANCatalystProxy {
     }
     
 
-    static func save_modal_panel(_ file_name: String, _ file_types: [String]) -> URL?{
+    public static func save_modal_panel(_ file_name: String, _ file_types: [String]) -> URL?{
         let save_panel = Dynamic.NSSavePanel()
         save_panel.allowedFileTypes = file_types //["html", "htm", "css", "js", "xml", "php"]
         if let doc_u = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -44,8 +45,7 @@ class BANCatalystProxy {
 
 
 extension UIWindow {
-
-    var nsWindow: Dynamic? {
+    public var nsWindow: Dynamic? {
         var nsWindow = Dynamic.NSApplication.sharedApplication.delegate.hostWindowForUIWindow(self)
         if #available(macOS 11, *) {
             nsWindow = nsWindow.attachedWindow
@@ -61,3 +61,4 @@ extension UIWindow {
     //    }
 }
 typealias ResponseBlock = @convention(block) (_ response: Int) -> Void
+#endif

@@ -30,7 +30,7 @@ extension BANEditorUIViewController {
     
 
         //LEFT
-        if !Platform.isCatalyst {
+        if !BANPlatform.isCatalyst {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save_btn))
         }
 
@@ -51,7 +51,7 @@ extension BANEditorUIViewController {
 //        }
 
 
-        if !Platform.isCatalyst {
+        if !BANPlatform.isCatalyst {
             let close_btn   = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close_editor_btn))
             rb.append(close_btn)
         }
@@ -128,7 +128,7 @@ extension BANEditorUIViewController {
         guard let del   = docdelegatex  else { return }
         Task{
             guard await del.doc_will_close() else { return }
-            if !Platform.isCatalyst {
+            if !BANPlatform.isCatalyst {
                 dismiss(animated: true)
             }
         }

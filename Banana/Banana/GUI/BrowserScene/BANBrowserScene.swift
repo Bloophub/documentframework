@@ -7,11 +7,11 @@
 
 import UIKit
 
-class BANBrowserDocumentWindow: UIWindow {
+open class BANBrowserDocumentWindow: UIWindow {
     override init(windowScene: UIWindowScene){
         super.init(windowScene: windowScene)
     }
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     deinit {
@@ -20,7 +20,7 @@ class BANBrowserDocumentWindow: UIWindow {
 
 }
 
-class BANBrowserScene: UIWindowScene {
+open class BANBrowserScene: UIWindowScene {
     override init(session: UISceneSession, connectionOptions: UIScene.ConnectionOptions){
         super.init(session: session, connectionOptions: connectionOptions)
     }
@@ -31,27 +31,27 @@ class BANBrowserScene: UIWindowScene {
 
 }
 
-class BANBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
+open class BANBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     deinit {
         //ALog.log_verbose("BrowserDocumentSceneDelegate deinit")
     }
     
-    func sceneDidDisconnect(_ scene: UIScene) {
+    public func sceneDidDisconnect(_ scene: UIScene) {
         //ALog.log_verbose("BrowserDocumentSceneDelegate sceneDidDisconnect \(scene.session.configuration.name ?? "")")
     }
     
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    public func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.forEach { uc in
             BANSceneManager.open_url(uc.url)
         }
     }
     
     
-    var windowx: BANBrowserDocumentWindow?
-    let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil)
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    public var windowx: BANBrowserDocumentWindow?
+    public let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil)
+    public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
 

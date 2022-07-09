@@ -7,7 +7,7 @@
 
 import UIKit
 
-@main
+//@main
 class BANAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?

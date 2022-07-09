@@ -8,11 +8,11 @@
 import UIKit
 import Dynamic
 
-class BANPreferenceAppearanceUITableViewController : BANBaseUITableViewController {
+open class BANPreferenceAppearanceUITableViewController : BANBaseUITableViewController {
         
         private let cell_identifier =  "TXTPreferenceAppearanceUITableViewControllerCell"
         
-        override func viewDidLoad() {
+        override public func viewDidLoad() {
             super.viewDidLoad()
             self.navigationItem.title = "Appearance"
             
@@ -27,16 +27,16 @@ class BANPreferenceAppearanceUITableViewController : BANBaseUITableViewControlle
             ]
         }()
         
-        override func numberOfSections(in tableView: UITableView) -> Int {
+        override public func numberOfSections(in tableView: UITableView) -> Int {
             return 1
         }
         
         
-        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return data.count
         }
         
-        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell: UITableViewCell = {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: cell_identifier) else {
                     return UITableViewCell(style: .value1, reuseIdentifier: cell_identifier)
@@ -62,7 +62,7 @@ class BANPreferenceAppearanceUITableViewController : BANBaseUITableViewControlle
             return cell
         }
             
-        override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             let section = indexPath.section
             let row     = indexPath.row
             if(section == 0) {
@@ -95,7 +95,7 @@ class BANPreferenceAppearanceUITableViewController : BANBaseUITableViewControlle
                 }
                 let a = get_style()
                 
-                if(Platform.isPhone){
+                if(BANPlatform.isPhone){
                     view.window?.overrideUserInterfaceStyle = a
                     return
                 }
@@ -148,7 +148,7 @@ class BANPreferenceAppearanceUITableViewController : BANBaseUITableViewControlle
             }
         }
         
-        override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        override public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
             if let cell = tableView.cellForRow(at: indexPath) {
                 cell.accessoryType = .none
             }
@@ -156,7 +156,7 @@ class BANPreferenceAppearanceUITableViewController : BANBaseUITableViewControlle
         
         
         
-        override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        override public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             switch section {
             case 0:
                 return "Appearance"

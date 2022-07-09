@@ -7,22 +7,21 @@
 
 import Foundation
 
-class TXTAPPURLs{
-    static var base_url: URL?
-    static var edit_url: URL?
+public class TXTAPPURLs{
+    public static var base_url: URL?
+    public static var edit_url: URL?
 
-    class func get_editor_url() -> URL?{
-//        edit_url?.appendingPathComponent("editortest.html")
+    public class func get_editor_url() -> URL?{
         edit_url?.appendingPathComponent("editor.html")
     }
     
-    class func basic_document_url() -> URL?{
+    public class func basic_document_url() -> URL?{
         let newDocumentURL: URL? = Bundle.main.url(forResource: "new_page", withExtension: "html")
         return newDocumentURL
     }
 
     
-    class func create_urls() throws {
+    public class func create_urls() throws {
         guard let group_url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: app_group) else {
             return
         }

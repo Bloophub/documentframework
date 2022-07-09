@@ -9,21 +9,20 @@ import UIKit
 
 import UIKit
 
-class BANPrefSceneWindow: UIWindow {
+open class BANPrefSceneWindow: UIWindow {
     override init(windowScene: UIWindowScene){
         super.init(windowScene: windowScene)
     }
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     deinit {
-//        rootViewController = UIViewController()
-        //ALog.log_verbose("deinit BrowserDocumentWindow \(rootViewController) \(String.pointer(windowScene?.session))")
+        ALog.log_verbose("deinit BrowserDocumentWindow")
     }
 
 }
 
-class BANPrefSceneScene: UIWindowScene {
+open class BANPrefSceneScene: UIWindowScene {
     override init(session: UISceneSession, connectionOptions: UIScene.ConnectionOptions){
         super.init(session: session, connectionOptions: connectionOptions)
     }
@@ -31,32 +30,34 @@ class BANPrefSceneScene: UIWindowScene {
     deinit {
         ALog.log_verbose("deinit BANPrefSceneDelegate")
     }
-
 }
 
-class BANPrefSceneDelegate: UIResponder, UIWindowSceneDelegate {
-    
+open class BANPrefSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     deinit {
         ALog.log_verbose("deinit BANPrefSceneDelegate")
     }
     
-    func sceneDidDisconnect(_ scene: UIScene) {
+    public func sceneDidDisconnect(_ scene: UIScene) {
         //ALog.log_verbose("BrowserDocumentSceneDelegate sceneDidDisconnect \(scene.session.configuration.name ?? "")")
     }
     
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    public func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.forEach { uc in
             BANSceneManager.open_url(uc.url)
         }
     }
     
+    public var windowx: BANPrefSceneWindow?
+//    public let prefs = BANPreferenceUITableViewController(style: .insetGrouped)
     
-    var windowx: BANPrefSceneWindow?
-    let prefs = BANPreferenceUITableViewController(style: .insetGrouped)
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    open func get_root_view_controller() -> UIViewController {
+        return BANPreferenceUITableViewController(style: .insetGrouped)
+    }
+    
+    public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let nav             = UINavigationController(rootViewController: prefs)
+        let nav             = UINavigationController(rootViewController: get_root_view_controller())
         let window          = BANPrefSceneWindow(windowScene: windowScene)
         windowx             = window
         windowScene.title   = "Settings"

@@ -7,26 +7,30 @@
 
 import UIKit
 
-class BANAlertSceneWindow: UIWindow {
-    
-}
-
-class BANAlertScene: UIWindowScene {
+public class BANAlertSceneWindow: UIWindow {
     deinit{
-        ALog.log_verbose("deinit AlertScene")
+        ALog.log_verbose("deinit BANAlertSceneWindow")
     }
 }
 
-class BANAlertSceneDelegate: UIResponder, UIWindowSceneDelegate {
-    
-    var window: UIWindow?
+public class BANAlertScene: UIWindowScene {
+    deinit{
+        ALog.log_verbose("deinit BANAlertScene")
+    }
+}
+
+open class BANAlertSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    deinit{
+        ALog.log_verbose("deinit BANAlertSceneDelegate")
+    }
+    public var window: UIWindow?
     var guid = UUID().uuidString
     
-    func sceneDidDisconnect(_ scene: UIScene) {
+    public func sceneDidDisconnect(_ scene: UIScene) {
 //
     }
     
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         var title   = ""
         var message = ""

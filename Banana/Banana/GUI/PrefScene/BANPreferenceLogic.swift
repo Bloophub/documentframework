@@ -9,29 +9,34 @@ import Foundation
 import Dynamic
 import UIKit
 
-let pref_noty = NSNotification.Name(rawValue: "pref_noty")
-let pref_editor_preference  = "pref_editor_preference"
-let pref_appearance         = "pref_appearance"
+public let pref_noty                = NSNotification.Name(rawValue: "pref_noty")
+public let pref_editor_preference   = "pref_editor_preference"
+public let pref_appearance          = "pref_appearance"
 
-class BANPreference {
-    func set_value(_ key: String, _ value : Any){
+open class BANPreference {
+    
+    public init(){
+        
+    }
+    
+    public func set_value(_ key: String, _ value : Any){
         UserDefaults.standard.set(value, forKey: key)
         NotificationCenter.default.post(name: pref_noty, object: key)
     }
-    func get_value(_ key: String) -> Any?{
+    public func get_value(_ key: String) -> Any?{
         UserDefaults.standard.object(forKey: key)
     }
 
     @MainActor
-    func set_appearance(_ value : BANAppearance){
+    public func set_appearance(_ value : BANAppearance){
         UserDefaults.standard.set(value.rawValue, forKey: pref_appearance)
         update_appearance()
     }
     
-    func update_appearance(){
+    public func update_appearance(){
         let value = get_appearance()
         let a = value.get_ui_style()
-        if(Platform.isPhone){
+        if(BANPlatform.isPhone){
             UIApplication.get_key_window()?.overrideUserInterfaceStyle = a
             return
         }
@@ -75,7 +80,7 @@ class BANPreference {
 
     }
     
-    func get_appearance() -> BANAppearance{
+    public func get_appearance() -> BANAppearance{
         if let i = UserDefaults.standard.object(forKey: pref_appearance) as? Int {
             return BANAppearance(rawValue: i) ?? BANAppearance.UseSystem
         }

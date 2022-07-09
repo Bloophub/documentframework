@@ -9,14 +9,14 @@
 import Foundation
 import CocoaLumberjackSwift
 
-let ALog = BANLogger.shared()
-@objc class BANLogger: NSObject {
+public let ALog = BANLogger.shared()
+public class BANLogger {
     private static var sharedLogger: BANLogger = {
         let networkManager = BANLogger()
         return networkManager
     }()
     
-    @objc class func shared() -> BANLogger {
+    public class func shared() -> BANLogger {
         return sharedLogger
     }
     private var log_run = 0
@@ -24,7 +24,7 @@ let ALog = BANLogger.shared()
     var environment: BANAPPENV = .develop
     
     //#if os(OSX)
-    func create_logger(env: BANAPPENV){
+    public func create_logger(env: BANAPPENV){
        
         environment     = env
         
@@ -85,23 +85,23 @@ let ALog = BANLogger.shared()
     }
     
 //    #if os(OSX)
-    @objc func log_error(_ log: String){
+    @objc public func log_error(_ log: String){
         DDLogError(log)
     }
-    @objc func log_info(_ log: String){
+    @objc public func log_info(_ log: String){
         DDLogInfo(log)
     }
-    @objc func log_warn(_ log: String){
+    @objc public func log_warn(_ log: String){
         DDLogWarn(log)
     }
-    @objc func log_exception(_ log: String){
+    @objc public func log_exception(_ log: String){
         DDLogError(log)
     }
-    @objc func log_verbose(_ log: String){
+    @objc public func log_verbose(_ log: String){
         DDLogVerbose(log)
     }
     
-    func track(_ text : String, customAttributes: [String:String]? = nil){
+    public func track(_ text : String, customAttributes: [String:String]? = nil){
         //let log = "\(XConfig.app_version ?? "")] \(text)"
         //Answers.logCustomEvent(withName: log, customAttributes: customAttributes)
         #if DEBUG
@@ -112,7 +112,7 @@ let ALog = BANLogger.shared()
     }
 }
 
-class AMZLogFormatter: NSObject, DDLogFormatter {
+public class AMZLogFormatter: NSObject, DDLogFormatter {
     
     let dateFormatter: DateFormatter
     var run = 0
@@ -122,7 +122,7 @@ class AMZLogFormatter: NSObject, DDLogFormatter {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss:SSS"
         super.init()
     }
-    func format(message logMessage: DDLogMessage) -> String? {
+    public func format(message logMessage: DDLogMessage) -> String? {
         return "[\(run)] \(logMessage.message)"
 //        let dateAndTime = dateFormatter.string(from: logMessage.timestamp)
 //        return "[\(run)] \(dateAndTime) [\(logMessage.fileName):\(logMessage.function!):\(logMessage.line)]: \(logMessage.message)"
@@ -138,9 +138,9 @@ class AMZLogFormatter: NSObject, DDLogFormatter {
 //import CocoaLumberjack
 //import CocoaLumberjackSwift
 
-class BANLogFormatter : NSObject,DDLogFormatter
+public class BANLogFormatter : NSObject,DDLogFormatter
 {
-    func format(message logMessage: DDLogMessage) -> String? {
+    public func format(message logMessage: DDLogMessage) -> String? {
         return "[\(logMessage.fileName):\(logMessage.function!):\(logMessage.line) \(stringForLogLevel(logLevel: logMessage.level))]: \(logMessage.message)"
     }
 

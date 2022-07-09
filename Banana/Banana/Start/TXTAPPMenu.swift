@@ -175,7 +175,7 @@ class TXTAppMenu : UIResponder{
         let pref_menu = TXTAppMenu.pref_menu()
         builder.insertSibling(pref_menu, afterMenu: .about)
 
-        if Platform.isCatalyst{
+        if BANPlatform.isCatalyst{
             /// File Menu
             let file_sec_1_menu = TXTAppMenu.crud_menu()
             builder.insertChild(file_sec_1_menu, atStartOfMenu: .file)

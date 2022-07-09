@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import WebKit
 
-class BANJSConnector: NSObject {
+open class BANJSConnector: NSObject {
     weak var web_view: WKWebView?
     weak var docdelegatex: BANDocumentManagerProtocol?
     
@@ -43,7 +43,7 @@ class BANJSConnector: NSObject {
 }
 
 extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
-    func unregister_connector(){
+    public func unregister_connector(){
         guard let wv = self.web_view else {
             self.docdelegatex?.present_error(BANError.no_webview)
             return
@@ -56,7 +56,7 @@ extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDele
         self.docdelegatex = nil 
     }
     
-    func register_connector(_ web_view: WKWebView){
+    public func register_connector(_ web_view: WKWebView){
         self.web_view = web_view
         let contentController = web_view.configuration.userContentController
         contentController.add(self, name: "scriptlog")
@@ -69,7 +69,7 @@ extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDele
     }
     
     
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         let body = message.body
         
         if message.name == "msg", let dict = message.body as? [String:Any] {
@@ -109,7 +109,7 @@ extension BANJSConnector {
     
     //MainActor is a new attribute introduced in Swift 5.5 as a global actor providing an executor which performs its tasks on the main thread.
     @MainActor
-    func run_editor_js(_ script: String) async throws -> Any? {
+    public func run_editor_js(_ script: String) async throws -> Any? {
         //ALog.log_verbose("script \(script)")
         guard let wk = self.web_view else{
             ALog.log_warn("run_editor_js missing wk")

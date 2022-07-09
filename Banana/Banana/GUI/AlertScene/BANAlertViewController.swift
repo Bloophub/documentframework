@@ -53,7 +53,7 @@ class BANAlertViewController: UIViewController {
         alertyMessageLbl.util_align_right_anchor(pixel: 10)
         
 
-        if Platform.isCatalyst == true {
+        if BANPlatform.isCatalyst == true {
             self.alertyCloseBtn.setTitle("OK", for: .normal)
         }
         alertyCloseBtn.layer.cornerRadius = 5

@@ -21,10 +21,10 @@ import UniformTypeIdentifiers
 //}
 
 
-class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
+open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
 //    weak var browser_delegatex: TXTDocumentBrowserViewControllerProtocol?
     var my_next: UIResponder?
-    override var next: UIResponder? { get {
+    override public var next: UIResponder? { get {
         if let my_nextx = my_next {
             return my_nextx
         }
@@ -35,13 +35,13 @@ class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
         ALog.log_verbose("deinit TXTDocumentBrowserViewController")
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
         allowsDocumentCreation = true
         allowsPickingMultipleItems = false
         
-        if !Platform.isCatalyst, let img = UIImage(systemName: "gear") {
+        if !BANPlatform.isCatalyst, let img = UIImage(systemName: "gear") {
             let gear_btn    = UIBarButtonItem(image: img, landscapeImagePhone: nil, style: .plain, target: self, action: #selector(show_settings_btn))
             //self.navigationItem.rightBarButtonItem  = gear_btn
             self.additionalTrailingNavigationBarButtonItems = [gear_btn]
@@ -54,7 +54,7 @@ class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
         BANSceneManager.show_pref_menu(self)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         #if targetEnvironment(macCatalyst)
         let nww = view.window?.nsWindow
 //        if let v = nww?.isVisible.asBool,v  {
@@ -64,7 +64,7 @@ class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
     }
     
     // MARK: UIDocumentBrowserViewControllerDelegate
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
+    public func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
         
         let newDocumentURL: URL? = TXTAPPURLs.basic_document_url()
         
@@ -76,7 +76,7 @@ class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
     }
     
     
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {
+    public func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {
         guard let sourceURL = documentURLs.first else { return }
         
         // Present the FileDocument View Controller for the first document that was picked.
@@ -84,12 +84,12 @@ class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
         presentDocument(at: sourceURL)
     }
     
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
+    public func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
         // Present the FileDocument View Controller for the new newly created document
         presentDocument(at: destinationURL)
     }
     
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, failedToImportDocumentAt documentURL: URL, error: Error?) {
+    public func documentBrowser(_ controller: UIDocumentBrowserViewController, failedToImportDocumentAt documentURL: URL, error: Error?) {
         // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
         if let errrox = error {
             ALog.log_error("error \(errrox)")
@@ -106,7 +106,7 @@ class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
             ALog.log_error("error accessing scoped resource")
         }
         
-        if Platform.isCatalyst {
+        if BANPlatform.isCatalyst {
             let scene = view.window?.windowScene
             BANSceneManager.open_doc_scene(scene,documentURL)
 //            browser_delegatex?.browser_present_doc(documentURL)

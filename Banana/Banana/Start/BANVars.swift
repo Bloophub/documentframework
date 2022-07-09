@@ -8,18 +8,18 @@
 import Foundation
 import UIKit
 
-let environment             : BANAPPENV = .develop
-let app_group               : String            = "group.com.int.TextEditor"
-var APP_FOLDER_NAME         : String            = "BAN"
-var APPNAME                 : String            = "Text Editor"
-let XPref = BANPreference()
+public let environment             : BANAPPENV = .develop
+public let app_group               : String            = "group.com.int.TextEditor"
+public var APP_FOLDER_NAME         : String            = "BAN"
+public var APPNAME                 : String            = "Text Editor"
+public let XPref                   = BANPreference()
 
-enum BANAPPENV {
+public enum BANAPPENV {
     case develop
     case production
 }
 
-enum BANError: Error{
+public enum BANError: Error{
     case no_webview
     case missing_url
     case error_doc
@@ -42,7 +42,7 @@ extension BANError: LocalizedError {
 }
 
 
-enum BANAppearance: Int {
+public enum BANAppearance: Int {
     case UseSystem  = 0
     case DarkMode   = 1
     case LightMode  = 2

@@ -8,20 +8,20 @@
 import Foundation
 import UIKit
 
-protocol BANErrorProtocol {
+public protocol BANErrorProtocol {
     func present_error(_ error: Error)
     func present_error_text(_ text: String)
     func present_alert(_ alert: UIAlertController)
 }
 
 extension BANErrorProtocol where Self: UIViewController {
-    func present_alert(_ alert: UIAlertController) {
+    public func present_alert(_ alert: UIAlertController) {
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
         }
     }
     
-    func present_error(_ error: Error){
+    public func present_error(_ error: Error){
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: APPNAME, message: error.localizedDescription, preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil)
@@ -29,7 +29,7 @@ extension BANErrorProtocol where Self: UIViewController {
             self.present(alertController, animated: true, completion: nil)
         }
     }
-    func present_error_text(_ text: String){
+    public func present_error_text(_ text: String){
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: APPNAME, message: text, preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil)
@@ -39,10 +39,10 @@ extension BANErrorProtocol where Self: UIViewController {
     }
 }
 
-class BANBaseUIViewController: UIViewController, BANErrorProtocol {
+open class BANBaseUIViewController: UIViewController, BANErrorProtocol {
     
 }
 
-class BANBaseUITableViewController: UITableViewController, BANErrorProtocol {
+open class BANBaseUITableViewController: UITableViewController, BANErrorProtocol {
     
 }

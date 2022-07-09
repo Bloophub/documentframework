@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-protocol BANDocumentManagerProtocol: AnyObject, BANErrorProtocol {
+public protocol BANDocumentManagerProtocol: AnyObject, BANErrorProtocol {
     func get_js_connector() -> BANJSConnector
     func get_doc_url() -> URL
     func doc_will_close() async -> Bool
@@ -23,7 +23,7 @@ protocol BANDocumentManagerProtocol: AnyObject, BANErrorProtocol {
 //    func run_editor_actionid(_ actid: String)
 }
 
-class BANDocumentInterfaceManager: UIResponder {
+open class BANDocumentInterfaceManager: UIResponder {
 //    var current_lang: TXTLang = .js
     var file_url: URL! = nil
     var doc: BANDocument! = nil
@@ -31,7 +31,7 @@ class BANDocumentInterfaceManager: UIResponder {
     let editor_vc = BANEditorUIViewController()
 
     var my_next: UIResponder?
-    override var next: UIResponder? { get {
+    override public var next: UIResponder? { get {
         if let my_nextx = my_next {
             return my_nextx
         }
@@ -76,19 +76,19 @@ extension BANDocumentInterfaceManager {
 //MARK: - DOC DEL
 extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
     
-    func get_js_connector() -> BANJSConnector {
+    public func get_js_connector() -> BANJSConnector {
         js_connector
     }
     
-    func get_doc_url() -> URL{
+    public func get_doc_url() -> URL{
         file_url
     }
     
-    func get_doc() -> BANDocument{
+    public func get_doc() -> BANDocument{
         doc
     }
     
-    func doc_will_save() async -> Bool{
+    public func doc_will_save() async -> Bool{
         do{
             return try await editor_save_docx()
         }catch{
@@ -97,7 +97,7 @@ extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
         return false
     }
     
-    func doc_will_close() async -> Bool{
+    public func doc_will_close() async -> Bool{
         do{
             guard try await editor_save_docx() else { return false }
             let close = await close_docx()
@@ -112,23 +112,23 @@ extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
 
     
     //update content+save
-    func editor_save_docx() async throws -> Bool{
+    public func editor_save_docx() async throws -> Bool{
         try await update_doc_contentx()
         return await doc.save(to: get_doc_url(), for: .forOverwriting)
     }
     
     @MainActor
-    func update_doc_contentx() async throws  {
+    public func update_doc_contentx() async throws  {
         guard let content = try await js_connector.get_js_content() else { return }
         doc.update_content(content)
     }
     
     @MainActor
-    func doc_edited(){
+    public func doc_edited(){
         doc.updateChangeCount(.done)
     }
 
-    func doc_ready(){ //loaded js libs > load contant+ editor options
+    public func doc_ready(){ //loaded js libs > load contant+ editor options
         Task {
             ALog.log_verbose("editor_ready")
             do {
@@ -143,7 +143,7 @@ extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
     }
     
     @MainActor
-    func show_doc_int_pref(){
+    public func show_doc_int_pref(){
         BANSceneManager.show_pref_menu(editor_vc)
     }
 
@@ -159,13 +159,13 @@ extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
 
 //MARK: - ACTION
 extension BANDocumentInterfaceManager : TXTMainMenuActionProtocol{
-    func file_menu_save_action(_ sender: Any?){
+    public func file_menu_save_action(_ sender: Any?){
         Task{
             _ = await doc_will_save()
         }
     }
     
-    func file_menu_saveas_action(_ sender: Any?){
+    public func file_menu_saveas_action(_ sender: Any?){
         #if targetEnvironment(macCatalyst)
         do{
             try scene_save_as_doc()
@@ -175,7 +175,7 @@ extension BANDocumentInterfaceManager : TXTMainMenuActionProtocol{
         #endif
     }
     
-    override func validate(_ command: UICommand) {
+    override public func validate(_ command: UICommand) {
 
     }
     
@@ -185,7 +185,7 @@ extension BANDocumentInterfaceManager : TXTMainMenuActionProtocol{
 extension BANDocumentInterfaceManager {
     
     #if targetEnvironment(macCatalyst)
-    func scene_save_as_doc() throws {
+    public func scene_save_as_doc() throws {
         let fileManager = FileManager.default
         let dummy_doc_url = doc.fileURL
         guard dummy_doc_url.startAccessingSecurityScopedResource() else {
@@ -209,7 +209,7 @@ extension BANDocumentInterfaceManager {
         BANSceneManager.open_doc_scene(nil, new_doc_url)
     }
     
-    func close_save_docx() async -> Bool { //clsoe on btn catalyst window
+    public func close_save_docx() async -> Bool { //clsoe on btn catalyst window
         await doc_will_close()
     }
 
@@ -218,7 +218,7 @@ extension BANDocumentInterfaceManager {
 }
 
 extension BANDocumentInterfaceManager : TXTMainMenuEditorProtocol{
-    func editor_menu_run_editor_action(_ sender: Any?) {
+    public func editor_menu_run_editor_action(_ sender: Any?) {
 //        run_monaco_editor_action(sender)
     }
     
@@ -247,15 +247,15 @@ extension BANDocumentInterfaceManager : TXTMainMenuEditorProtocol{
 //MARK: - ERROR
 extension BANDocumentInterfaceManager {
 
-    func present_error(_ error: Error) {
+    public func present_error(_ error: Error) {
         editor_vc.present_error(error)
     }
     
-    func present_error_text(_ text: String) {
+    public func present_error_text(_ text: String) {
         editor_vc.present_error_text(text)
     }
     
-    func present_alert(_ alert: UIAlertController) {
+    public func present_alert(_ alert: UIAlertController) {
         editor_vc.present_alert(alert)
     }
 }

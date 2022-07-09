@@ -6,13 +6,13 @@
 //
 
 import Foundation
-enum ban_json_error: Error{
+public enum ban_json_error: Error{
     case json_serialize
 }
 
 
-class BANCloneUtility {
-    class func xclone<T:Codable>(_ obj: T) throws -> T {
+public class BANCloneUtility {
+    public class func xclone<T:Codable>(_ obj: T) throws -> T {
         let jsonEncoder = JSONEncoder()
         let data        = try jsonEncoder.encode(obj)
         let jsonDecoder = JSONDecoder()
@@ -34,7 +34,7 @@ class BANCloneUtility {
 //    }
 //}
 
-protocol BANJsonable: Codable, CustomStringConvertible {
+public protocol BANJsonable: Codable, CustomStringConvertible {
     func to_json() throws -> String
     func to_json_pretty() throws -> String
     func to_json_data() throws -> Data
@@ -42,28 +42,28 @@ protocol BANJsonable: Codable, CustomStringConvertible {
 }
 
 extension BANJsonable {
-    func to_json() throws -> String {
+    public func to_json() throws -> String {
 //        jsonEncoder.outputFormatting = .prettyPrinted
         let jsonString  = String(data: try to_json_data(), encoding: .utf8) ?? ""
         return jsonString
     }
-    func to_json_pretty() throws -> String {
+    public func to_json_pretty() throws -> String {
         let jsonEncoder = JSONEncoder()
         jsonEncoder.outputFormatting = .prettyPrinted
         let data = try jsonEncoder.encode(self)
         let jsonString  = String(data: data, encoding: .utf8) ?? ""
         return jsonString
     }
-    func to_json_data() throws -> Data {
+    public func to_json_data() throws -> Data {
         return try JSONEncoder().encode(self)
     }
-    func to_json_dict() throws -> [String:Any] {
+    public func to_json_dict() throws -> [String:Any] {
         guard let dict = try JSONSerialization.jsonObject(with: try to_json_data(), options: []) as? [String:Any] else {
             throw ban_json_error.json_serialize
         }
         return dict
     }
-    var description: String {
+    public var description: String {
         get {
             let s = try? to_json_pretty()
             return s ?? "not convertible"
