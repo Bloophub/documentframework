@@ -9,14 +9,14 @@ import Foundation
 import UIKit
 import WebKit
 
-class TXTJSConnector: NSObject {
+class BANJSConnector: NSObject {
     weak var web_view: WKWebView?
-    weak var docdelegatex: TXTDocumentManagerProtocol?
+    weak var docdelegatex: BANDocumentManagerProtocol?
     
     @MainActor
     @discardableResult func load_html(_ html: String) throws -> WKNavigation? {
         guard let wv = self.web_view else {
-            throw TXTError.no_webview
+            throw BANError.no_webview
         }
         return wv.loadHTMLString(html, baseURL: nil)
     }
@@ -25,10 +25,10 @@ class TXTJSConnector: NSObject {
     @MainActor
     @discardableResult func load_url(_ urlx: URL?) throws -> WKNavigation?{
         guard let wv = self.web_view else {
-            throw TXTError.no_webview
+            throw BANError.no_webview
         }
         guard let url = urlx else {
-            throw TXTError.missing_url
+            throw BANError.missing_url
         }
         if wv.isLoading {
             wv.stopLoading()
@@ -40,62 +40,12 @@ class TXTJSConnector: NSObject {
     func get_js_content() async throws -> String? {
         try await run_editor_js("get_content()") as? String
     }
-    
-//    @discardableResult func bild_js_editor(_ pref: TXTEditorPreference) async throws -> String? {
-//        let data = try pref.to_json_data()
-//        let str = "build_editor('\(data.base64EncodedString())')"
-//        return try await run_editor_js(str) as? String
-//    }
-//    
-//    
-//    @discardableResult func update_js_editor(_ pref: TXTEditorPreference) async throws -> String? {
-//        let data = try pref.to_json_data()
-//        let str = "update_editor('\(data.base64EncodedString())')"
-//        return try await run_editor_js(str) as? String
-//    }
-//    
-//    @discardableResult func set_js_content(_ content: String) async throws -> String? {
-//        let str = "set_content('\(content.toBase64())')"
-//        return try await run_editor_js(str) as? String
-//    }
-//    
-//    @discardableResult func set_js_lang(_ content: String) async throws -> String? {
-//        let str = "change_lang('\(content)')"
-//        return try await run_editor_js(str) as? String
-//    }
-//    
-//    @discardableResult func run_js_editor_action(_ action_id: String) async throws -> String? {
-//        let str = "run_action('\(action_id)')"
-//        return try await run_editor_js(str) as? String
-//    }
-    
-    
-    
-    //    func load_url_request(_ urlx: URLRequest?, completion: @escaping (Bool) -> ()) {
-    //        guard let wv = self.web_view else {
-    //            self.docdelegatex?.present_error(TXTError.no_webview)
-    //            return
-    //        }
-    //        guard let url = urlx?.url else {
-    //            self.docdelegatex?.present_error(TXTError.missing_url)
-    //            completion(false)
-    //            return
-    //        }
-    //        DispatchQueue.main.async {
-    //            if wv.isLoading {
-    //                wv.stopLoading()
-    //            }
-    //            let base_url = url.deletingLastPathComponent()
-    //            wv.loadFileURL(url, allowingReadAccessTo: base_url)
-    //            completion(true)
-    //        }
-    //    }
 }
 
-extension TXTJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
+extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
     func unregister_connector(){
         guard let wv = self.web_view else {
-            self.docdelegatex?.present_error(TXTError.no_webview)
+            self.docdelegatex?.present_error(BANError.no_webview)
             return
         }
         wv.configuration.userContentController.removeAllUserScripts()
@@ -155,7 +105,7 @@ extension TXTJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDele
     
 }
 
-extension TXTJSConnector {
+extension BANJSConnector {
     
     //MainActor is a new attribute introduced in Swift 5.5 as a global actor providing an executor which performs its tasks on the main thread.
     @MainActor
@@ -163,7 +113,7 @@ extension TXTJSConnector {
         //ALog.log_verbose("script \(script)")
         guard let wk = self.web_view else{
             ALog.log_warn("run_editor_js missing wk")
-            throw TXTError.no_webview
+            throw BANError.no_webview
         }
         return try await withCheckedThrowingContinuation { continuation in
             wk.evaluateJavaScript(script) { a, e in
@@ -176,29 +126,80 @@ extension TXTJSConnector {
         }
         //        return try await wk.evaluateJavaScript(script)
     }
-    //        DispatchQueue.main.async {
-    //            return try await withCheckedThrowingContinuation { continuation in
-    //                let vca = VCAPhotoProcessor(settings)
-    //                photo_processing[settings.uniqueID] = vca
-    //                vca.completionHandler = { result in
-    //                    self.photo_processing[settings.uniqueID] = nil
-    //                    continuation.resume(with: result)
-    //                }
-    //                // The photo output holds a weak reference to the photo capture delegate
-    //                //and stores it in an array to maintain a strong reference.
-    //                output.capturePhoto(with: settings, delegate: vca)
-    //            }
-    //            wk.evaluateJavaScript(script,completionHandler: block)
-    //        }
-    
-    //        let test_wk = selfweb_view // self.scene_delegatex?.scene_get_editor_controller(is_compact)?.editorWebView
-    //        guard let wk = test_wk else{
-    //            ALog.log_verbose("run_editor_js missing wk")
-    //            return
-    //        }
-    //        DispatchQueue.main.async {
-    //            wk.evaluateJavaScript(script,completionHandler: block)
-    //        }
-    //    }
+
     
 }
+
+//    @discardableResult func bild_js_editor(_ pref: TXTEditorPreference) async throws -> String? {
+//        let data = try pref.to_json_data()
+//        let str = "build_editor('\(data.base64EncodedString())')"
+//        return try await run_editor_js(str) as? String
+//    }
+//
+//
+//    @discardableResult func update_js_editor(_ pref: TXTEditorPreference) async throws -> String? {
+//        let data = try pref.to_json_data()
+//        let str = "update_editor('\(data.base64EncodedString())')"
+//        return try await run_editor_js(str) as? String
+//    }
+//
+//    @discardableResult func set_js_content(_ content: String) async throws -> String? {
+//        let str = "set_content('\(content.toBase64())')"
+//        return try await run_editor_js(str) as? String
+//    }
+//
+//    @discardableResult func set_js_lang(_ content: String) async throws -> String? {
+//        let str = "change_lang('\(content)')"
+//        return try await run_editor_js(str) as? String
+//    }
+//
+//    @discardableResult func run_js_editor_action(_ action_id: String) async throws -> String? {
+//        let str = "run_action('\(action_id)')"
+//        return try await run_editor_js(str) as? String
+//    }
+
+
+
+//    func load_url_request(_ urlx: URLRequest?, completion: @escaping (Bool) -> ()) {
+//        guard let wv = self.web_view else {
+//            self.docdelegatex?.present_error(TXTError.no_webview)
+//            return
+//        }
+//        guard let url = urlx?.url else {
+//            self.docdelegatex?.present_error(TXTError.missing_url)
+//            completion(false)
+//            return
+//        }
+//        DispatchQueue.main.async {
+//            if wv.isLoading {
+//                wv.stopLoading()
+//            }
+//            let base_url = url.deletingLastPathComponent()
+//            wv.loadFileURL(url, allowingReadAccessTo: base_url)
+//            completion(true)
+//        }
+//    }
+//        DispatchQueue.main.async {
+//            return try await withCheckedThrowingContinuation { continuation in
+//                let vca = VCAPhotoProcessor(settings)
+//                photo_processing[settings.uniqueID] = vca
+//                vca.completionHandler = { result in
+//                    self.photo_processing[settings.uniqueID] = nil
+//                    continuation.resume(with: result)
+//                }
+//                // The photo output holds a weak reference to the photo capture delegate
+//                //and stores it in an array to maintain a strong reference.
+//                output.capturePhoto(with: settings, delegate: vca)
+//            }
+//            wk.evaluateJavaScript(script,completionHandler: block)
+//        }
+
+//        let test_wk = selfweb_view // self.scene_delegatex?.scene_get_editor_controller(is_compact)?.editorWebView
+//        guard let wk = test_wk else{
+//            ALog.log_verbose("run_editor_js missing wk")
+//            return
+//        }
+//        DispatchQueue.main.async {
+//            wk.evaluateJavaScript(script,completionHandler: block)
+//        }
+//    }

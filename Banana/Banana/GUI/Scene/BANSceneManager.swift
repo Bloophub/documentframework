@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum TXTActivityIdentifier: String {
+enum BANActivityIdentifier: String {
     case document          = "document"
     case file_browser      = "file_browser"
     case preferences       = "preferences"
@@ -17,22 +17,22 @@ enum TXTActivityIdentifier: String {
         switch self {
         case .document:
             return UISceneConfiguration(
-                name: TXTSceneConfiguration.document_config.rawValue,
+                name: BANSceneConfiguration.document_config.rawValue,
                 sessionRole: .windowApplication
             )
         case .file_browser:
             return UISceneConfiguration(
-                name: TXTSceneConfiguration.default_config.rawValue,
+                name: BANSceneConfiguration.default_config.rawValue,
                 sessionRole: .windowApplication
             )
         case .preferences:
             return UISceneConfiguration(
-                name: TXTSceneConfiguration.preferences_config.rawValue,
+                name: BANSceneConfiguration.preferences_config.rawValue,
                 sessionRole: .windowApplication
             )
         case .alert_window:
             return UISceneConfiguration(
-                name: TXTSceneConfiguration.alert_config.rawValue,
+                name: BANSceneConfiguration.alert_config.rawValue,
                 sessionRole: .windowApplication
             )
         }
@@ -40,7 +40,7 @@ enum TXTActivityIdentifier: String {
 }
 
 
-enum TXTSceneConfiguration: String{
+enum BANSceneConfiguration: String{
     case alert_config           = "Alert Configuration"
     case document_config        = "Document Configuration"
 //    case new_document_config    = "New Document Configuration"
@@ -48,18 +48,22 @@ enum TXTSceneConfiguration: String{
     case preferences_config     = "Preferences Configuration"
 }
 
-enum TXTSceneKeys: String{
+enum BANSceneKeys: String{
     case doc_url            = "doc_url"
     case open_url           = "open_url"
     
 }
 //https://gist.github.com/steipete/40a367b64b57bfd0b44fa8d158fc016c
 @MainActor
-class TXTSceneManager {
+class BANSceneManager {
 
-    static func get_editor_scenes() -> [TXTDocumentScene] {
+    static func get_app_file_types() -> [String] {
+        return []
+    }
+    
+    static func get_editor_scenes() -> [BANDocumentScene] {
         return UIApplication.shared.connectedScenes.compactMap { scene in
-            scene as? TXTDocumentScene
+            scene as? BANDocumentScene
         }
 //        var documentScenes: [TXTDocumentScene] = []
 //        UIApplication.shared.connectedScenes.forEach { scene in
@@ -77,19 +81,19 @@ class TXTSceneManager {
             //                    ALog.log_verbose("\(win)")
             //                }
             //            }
-            return scene.session.configuration.name == TXTSceneConfiguration.default_config.rawValue
+            return scene.session.configuration.name == BANSceneConfiguration.default_config.rawValue
         } as? UIWindowScene
     }
 
     static func preferences_scene() -> UIWindowScene?{
         return UIApplication.shared.connectedScenes.first { scene in
-            return scene.session.configuration.name == TXTSceneConfiguration.preferences_config.rawValue
+            return scene.session.configuration.name == BANSceneConfiguration.preferences_config.rawValue
         } as? UIWindowScene
     }
 
     private static func open_preferences_scene(_ vc: UIViewController?, _ errorHandler: ((Error) -> Void)? = nil){
         if let vcx = vc, !Platform.isCatalyst {
-            let pref    = TXTPreferenceUITableViewController( style: .insetGrouped)
+            let pref    = BANPreferenceUITableViewController( style: .insetGrouped)
             let nav     = UINavigationController(rootViewController: pref)
             vcx.present(nav,animated: true)
             return
@@ -97,7 +101,7 @@ class TXTSceneManager {
         if preferences_scene() != nil {
             return
         }
-        let activity = NSUserActivity(activityType: TXTActivityIdentifier.preferences.rawValue)
+        let activity = NSUserActivity(activityType: BANActivityIdentifier.preferences.rawValue)
         activity.addUserInfoEntries(from: ["viaMenu":"true"])
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: errorHandler)
     }
@@ -106,7 +110,7 @@ class TXTSceneManager {
         if file_browser_scene() != nil {
             return
         }
-        let activity = NSUserActivity(activityType: TXTActivityIdentifier.file_browser.rawValue)
+        let activity = NSUserActivity(activityType: BANActivityIdentifier.file_browser.rawValue)
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: errorHandler)
     }
 
@@ -118,15 +122,15 @@ class TXTSceneManager {
         if let sc = scene {
             close_scene(sc.session)
         }
-        let userActivity = NSUserActivity(activityType: TXTActivityIdentifier.document.rawValue)
-        userActivity.userInfo = [TXTSceneKeys.doc_url.rawValue:url.path]
+        let userActivity = NSUserActivity(activityType: BANActivityIdentifier.document.rawValue)
+        userActivity.userInfo = [BANSceneKeys.doc_url.rawValue:url.path]
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: userActivity, options: nil, errorHandler: nil)
     }
     
     static func doc_scene(_ url: URL) -> UIWindowScene? {
         let ws = UIApplication.shared.connectedScenes.first { scene in
-            if scene.session.configuration.name == TXTSceneConfiguration.document_config.rawValue,
-               let bd = scene.delegate as? TXTDocumentSceneDelegate {
+            if scene.session.configuration.name == BANSceneConfiguration.document_config.rawValue,
+               let bd = scene.delegate as? BANDocumentSceneDelegate {
                 let doc_int = bd.get_doc_int_manager()
                 if doc_int?.get_doc_url() == url {
                     return true
@@ -139,7 +143,7 @@ class TXTSceneManager {
     
     
     @discardableResult static func open_url(_ url: URL) -> Bool{
-        let browser_controllerx = TXTDocumentBrowserViewController(forOpening: nil) // was nil -> [.html]
+        let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil) // was nil -> [.html]
         browser_controllerx.presentDocument(at: url)
         return true
     }
@@ -154,7 +158,7 @@ class TXTSceneManager {
             open_preferences_scene(vcx)
         }
         //hedge case called without VC find the current editor
-        else if let del = UIApplication.get_key_window()?.windowScene?.delegate as? TXTBrowserDocumentSceneDelegate,
+        else if let del = UIApplication.get_key_window()?.windowScene?.delegate as? BANBrowserDocumentSceneDelegate,
                 let doc_int = del.browser_controllerx.doc_int_manager  {
             doc_int.show_doc_int_pref()
         }
@@ -169,13 +173,13 @@ class TXTSceneManager {
     
 #if targetEnvironment(macCatalyst)
     static func open_alert_scene(_ title: String, _ message: String, _ errorHandler: ((Error) -> Void)? = nil){
-        let activity = NSUserActivity(activityType: TXTActivityIdentifier.alert_window.rawValue)
+        let activity = NSUserActivity(activityType: BANActivityIdentifier.alert_window.rawValue)
         activity.addUserInfoEntries(from: ["title" : title])
         activity.addUserInfoEntries(from: ["message" : message])
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: errorHandler)
     }
     static func open_alert_error_scene(_ title: String, _ error: Error, _ errorHandler: ((Error) -> Void)? = nil){
-        let activity = NSUserActivity(activityType: TXTActivityIdentifier.alert_window.rawValue)
+        let activity = NSUserActivity(activityType: BANActivityIdentifier.alert_window.rawValue)
         activity.addUserInfoEntries(from: ["title" : title])
         activity.addUserInfoEntries(from: ["message" : error.localizedDescription])
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: errorHandler)
@@ -183,21 +187,22 @@ class TXTSceneManager {
 #endif
 
 #if targetEnvironment(macCatalyst)
-    static func new_doc(_ file_types: [String]) throws{
+    static func new_doc() throws{
+        let file_types: [String] = get_app_file_types()
         guard let existing_document_url: URL = TXTAPPURLs.basic_document_url() else {
             ALog.log_error("new_doc basic_document_url")
-            throw TXTError.error_doc
+            throw BANError.error_doc
         }
 
         let file_name = "";
-        guard let new_doc_url = CatalystProxy.save_modal_panel(file_name,file_types) else {
+        guard let new_doc_url = BANCatalystProxy.save_modal_panel(file_name,file_types) else {
             ALog.log_error("new_doc save_modal_panel")
-            throw TXTError.error_doc
+            throw BANError.error_doc
         }
 
         guard new_doc_url.startAccessingSecurityScopedResource() else {
             ALog.log_error("new_doc_url startAccessingSecurityScopedResource1")
-            throw TXTError.error_doc
+            throw BANError.error_doc
         }
         
         var new_doc_url2 = new_doc_url
@@ -206,7 +211,7 @@ class TXTSceneManager {
         }
         guard new_doc_url2.startAccessingSecurityScopedResource() else {
             ALog.log_error("new_doc_url2 startAccessingSecurityScopedResource2")
-            throw TXTError.error_doc
+            throw BANError.error_doc
         }
         new_doc_url.stopAccessingSecurityScopedResource()
         if FileManager.default.fileExists(atPath: new_doc_url2.path) {
@@ -216,7 +221,7 @@ class TXTSceneManager {
 //        let dbvc = TXTDocumentBrowserViewController(forOpening: nil)
         let data = try Data(contentsOf: existing_document_url)
         try data.write(to: new_doc_url2)
-        TXTSceneManager.open_doc_scene(nil,new_doc_url2)
+        BANSceneManager.open_doc_scene(nil,new_doc_url2)
 //        dbvc.presentDocument(at: new_doc_url2.absoluteURL)
 
     }

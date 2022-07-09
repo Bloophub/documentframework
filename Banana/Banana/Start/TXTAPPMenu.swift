@@ -583,12 +583,12 @@ class TXTAppMenu : UIResponder{
 //}
 
 //MARK: - AppDelegate
-extension TXTAppDelegate: TXTMainMenuGeneralProtocol {
+extension BANAppDelegate: TXTMainMenuGeneralProtocol {
     
     override func validate(_ command: UICommand) {
         if command.action == #selector(file_menu_open_action(_:)) {
             command.attributes = []
-            if TXTSceneManager.file_browser_scene() != nil {
+            if BANSceneManager.file_browser_scene() != nil {
                 command.attributes = .disabled
             }
         }
@@ -596,26 +596,25 @@ extension TXTAppDelegate: TXTMainMenuGeneralProtocol {
     
     @objc func file_menu_open_action(_ sender: Any?) {
         #if targetEnvironment(macCatalyst)
-        TXTSceneManager.open_file_browser_scene { err in
-            TXTSceneManager.open_alert_error_scene(APPNAME, err)
+        BANSceneManager.open_file_browser_scene { err in
+            BANSceneManager.open_alert_error_scene(APPNAME, err)
         }
         #endif
     }
     
     @objc func file_menu_new_action(_ sender: Any?) {
-        //TXTSceneManager.open_alert_scene(APPNAME, "DEeded")
         #if targetEnvironment(macCatalyst)
         do{
-            try TXTSceneManager.new_doc(TXTLang.get_exts_save_panel)
+            try BANSceneManager.new_doc()
         }catch {
             ALog.log_error("file_menu_new_action \(error)")
-            TXTSceneManager.open_alert_error_scene(APPNAME, error)
+            BANSceneManager.open_alert_error_scene(APPNAME, error)
         }
         #endif
     }
     
     @objc func menu_pref_action(_ sender: Any?) {
-        TXTSceneManager.show_pref_menu(nil)
+        BANSceneManager.show_pref_menu(nil)
     }
     
 }

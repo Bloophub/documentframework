@@ -21,7 +21,7 @@ import UniformTypeIdentifiers
 //}
 
 
-class TXTDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
+class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
 //    weak var browser_delegatex: TXTDocumentBrowserViewControllerProtocol?
     var my_next: UIResponder?
     override var next: UIResponder? { get {
@@ -51,7 +51,7 @@ class TXTDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
     @objc private func show_settings_btn(_ sender: Any?){
 //        guard let del = docdelegatex  else { return }
 //        doc_int_manager?.show_doc_int_pref()
-        TXTSceneManager.show_pref_menu(self)
+        BANSceneManager.show_pref_menu(self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -97,7 +97,7 @@ class TXTDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
     }
     
     // MARK: FileDocument Presentation
-    public var doc_int_manager: TXTDocumentInterfaceManager?
+    public var doc_int_manager: BANDocumentInterfaceManager?
     //https://stackoverflow.com/questions/67459304/how-to-avoid-strange-behavior-when-scene-based-document-mac-catalyst-app-reopens
     func presentDocument(at documentURL: URL) {
         ALog.log_verbose("presentDocument documentURL: \(documentURL)")
@@ -108,11 +108,11 @@ class TXTDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocum
         
         if Platform.isCatalyst {
             let scene = view.window?.windowScene
-            TXTSceneManager.open_doc_scene(scene,documentURL)
+            BANSceneManager.open_doc_scene(scene,documentURL)
 //            browser_delegatex?.browser_present_doc(documentURL)
             return
         }
-        let doc_int_managerx        = TXTDocumentInterfaceManager.build(documentURL)
+        let doc_int_managerx        = BANDocumentInterfaceManager.build(documentURL)
         doc_int_manager             = doc_int_managerx
         let nav                     = UINavigationController(rootViewController: doc_int_managerx.editor_vc)
         nav.modalPresentationStyle  = .fullScreen

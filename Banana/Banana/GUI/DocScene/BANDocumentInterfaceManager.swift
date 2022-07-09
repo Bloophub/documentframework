@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 
-protocol TXTDocumentManagerProtocol: AnyObject, TXTErrorProtocol {
-    func get_js_connector() -> TXTJSConnector
+protocol BANDocumentManagerProtocol: AnyObject, BANErrorProtocol {
+    func get_js_connector() -> BANJSConnector
     func get_doc_url() -> URL
     func doc_will_close() async -> Bool
     func doc_will_save() async -> Bool
@@ -23,12 +23,12 @@ protocol TXTDocumentManagerProtocol: AnyObject, TXTErrorProtocol {
 //    func run_editor_actionid(_ actid: String)
 }
 
-class TXTDocumentInterfaceManager: UIResponder {
-    var current_lang: TXTLang = .js
+class BANDocumentInterfaceManager: UIResponder {
+//    var current_lang: TXTLang = .js
     var file_url: URL! = nil
-    var doc: TXTDocument! = nil
-    let js_connector = TXTJSConnector()
-    let editor_vc = TXTEditorUIViewController()
+    var doc: BANDocument! = nil
+    let js_connector = BANJSConnector()
+    let editor_vc = BANEditorUIViewController()
 
     var my_next: UIResponder?
     override var next: UIResponder? { get {
@@ -38,10 +38,10 @@ class TXTDocumentInterfaceManager: UIResponder {
         return super.next
     }}
 
-    class func build(_ url: URL) -> TXTDocumentInterfaceManager{
-        let di                          = TXTDocumentInterfaceManager()
+    class func build(_ url: URL) -> BANDocumentInterfaceManager{
+        let di                          = BANDocumentInterfaceManager()
         di.file_url                     = url
-        di.doc                          = TXTDocument(fileURL: url)
+        di.doc                          = BANDocument(fileURL: url)
         di.js_connector.docdelegatex    = di
         di.editor_vc.docdelegatex       = di
         return di
@@ -58,7 +58,7 @@ class TXTDocumentInterfaceManager: UIResponder {
 }
 
 //MARK: - DOC
-extension TXTDocumentInterfaceManager {
+extension BANDocumentInterfaceManager {
     func open_docx() async -> Bool{
         let st = doc.documentState
         if st == .closed { return await doc.open() }
@@ -74,9 +74,9 @@ extension TXTDocumentInterfaceManager {
 }
 
 //MARK: - DOC DEL
-extension TXTDocumentInterfaceManager : TXTDocumentManagerProtocol{
+extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
     
-    func get_js_connector() -> TXTJSConnector {
+    func get_js_connector() -> BANJSConnector {
         js_connector
     }
     
@@ -84,7 +84,7 @@ extension TXTDocumentInterfaceManager : TXTDocumentManagerProtocol{
         file_url
     }
     
-    func get_doc() -> TXTDocument{
+    func get_doc() -> BANDocument{
         doc
     }
     
@@ -133,7 +133,7 @@ extension TXTDocumentInterfaceManager : TXTDocumentManagerProtocol{
             ALog.log_verbose("editor_ready")
             do {
                 if await open_docx() == false {
-                    throw TXTError.error_doc
+                    throw BANError.error_doc
                 }
                 try await editor_vc.editor_loaded_html(doc.get_content(), get_doc_url())
             }catch {
@@ -144,7 +144,7 @@ extension TXTDocumentInterfaceManager : TXTDocumentManagerProtocol{
     
     @MainActor
     func show_doc_int_pref(){
-        TXTSceneManager.show_pref_menu(editor_vc)
+        BANSceneManager.show_pref_menu(editor_vc)
     }
 
 //    func run_editor_command_action(_ command: UICommand){
@@ -158,7 +158,7 @@ extension TXTDocumentInterfaceManager : TXTDocumentManagerProtocol{
 
 
 //MARK: - ACTION
-extension TXTDocumentInterfaceManager : TXTMainMenuActionProtocol{
+extension BANDocumentInterfaceManager : TXTMainMenuActionProtocol{
     func file_menu_save_action(_ sender: Any?){
         Task{
             _ = await doc_will_save()
@@ -182,31 +182,31 @@ extension TXTDocumentInterfaceManager : TXTMainMenuActionProtocol{
 }
 
 //MARK: - SAVEAS Catalyst
-extension TXTDocumentInterfaceManager {
+extension BANDocumentInterfaceManager {
     
     #if targetEnvironment(macCatalyst)
     func scene_save_as_doc() throws {
         let fileManager = FileManager.default
         let dummy_doc_url = doc.fileURL
         guard dummy_doc_url.startAccessingSecurityScopedResource() else {
-            throw TXTError.error_doc
+            throw BANError.error_doc
         }
         let file_name = "";
-        guard let new_doc_url = CatalystProxy.save_modal_panel(file_name,[dummy_doc_url.pathExtension]) else {
-            throw TXTError.error_doc
+        guard let new_doc_url = BANCatalystProxy.save_modal_panel(file_name,[dummy_doc_url.pathExtension]) else {
+            throw BANError.error_doc
         }
         guard new_doc_url.startAccessingSecurityScopedResource() else {
-            throw TXTError.error_doc
+            throw BANError.error_doc
         }
         if fileManager.fileExists(atPath: new_doc_url.path){
             try fileManager.removeItem(at: new_doc_url)
         }
         try fileManager.copyItem(at: dummy_doc_url, to: new_doc_url)
         //if exist destroy and recreate
-        if let doc_scene = TXTSceneManager.doc_scene(new_doc_url) {
-            TXTSceneManager.close_scene(doc_scene.session)
+        if let doc_scene = BANSceneManager.doc_scene(new_doc_url) {
+            BANSceneManager.close_scene(doc_scene.session)
         }
-        TXTSceneManager.open_doc_scene(nil, new_doc_url)
+        BANSceneManager.open_doc_scene(nil, new_doc_url)
     }
     
     func close_save_docx() async -> Bool { //clsoe on btn catalyst window
@@ -217,7 +217,7 @@ extension TXTDocumentInterfaceManager {
 
 }
 
-extension TXTDocumentInterfaceManager : TXTMainMenuEditorProtocol{
+extension BANDocumentInterfaceManager : TXTMainMenuEditorProtocol{
     func editor_menu_run_editor_action(_ sender: Any?) {
 //        run_monaco_editor_action(sender)
     }
@@ -245,7 +245,7 @@ extension TXTDocumentInterfaceManager : TXTMainMenuEditorProtocol{
 }
 
 //MARK: - ERROR
-extension TXTDocumentInterfaceManager {
+extension BANDocumentInterfaceManager {
 
     func present_error(_ error: Error) {
         editor_vc.present_error(error)

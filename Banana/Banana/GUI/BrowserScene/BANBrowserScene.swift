@@ -1,5 +1,5 @@
 //
-//  TXTBrowserScene1.swift
+//  BANBrowserScene1.swift
 //  TextEditor
 //
 //  Created by Giovanni Simonicca on 7/8/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TXTBrowserDocumentWindow: UIWindow {
+class BANBrowserDocumentWindow: UIWindow {
     override init(windowScene: UIWindowScene){
         super.init(windowScene: windowScene)
     }
@@ -15,12 +15,12 @@ class TXTBrowserDocumentWindow: UIWindow {
         fatalError("init(coder:) has not been implemented")
     }
     deinit {
-        ALog.log_verbose("deinit TXTBrowserDocumentWindow \(self)")
+        ALog.log_verbose("deinit BANBrowserDocumentWindow \(self)")
     }
 
 }
 
-class TXTBrowserScene: UIWindowScene {
+class BANBrowserScene: UIWindowScene {
     override init(session: UISceneSession, connectionOptions: UIScene.ConnectionOptions){
         super.init(session: session, connectionOptions: connectionOptions)
     }
@@ -31,7 +31,7 @@ class TXTBrowserScene: UIWindowScene {
 
 }
 
-class TXTBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
+class BANBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     deinit {
@@ -44,18 +44,18 @@ class TXTBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.forEach { uc in
-            TXTSceneManager.open_url(uc.url)
+            BANSceneManager.open_url(uc.url)
         }
     }
     
     
-    var windowx: TXTBrowserDocumentWindow?
-    let browser_controllerx = TXTDocumentBrowserViewController(forOpening: nil)
+    var windowx: BANBrowserDocumentWindow?
+    let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil)
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
 
-        let window                                      = TXTBrowserDocumentWindow(windowScene: windowScene)
+        let window                                      = BANBrowserDocumentWindow(windowScene: windowScene)
         windowx                                         = window
 //        browser_controllerx.browser_delegatex           = self
         window.rootViewController                       = browser_controllerx
@@ -77,7 +77,7 @@ class TXTBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
 //    }
 }
 
-//extension TXTBrowserDocumentSceneDelegate : TXTDocumentBrowserViewControllerProtocol {
+//extension BANBrowserDocumentSceneDelegate : TXTDocumentBrowserViewControllerProtocol {
 //    func browser_present_doc(_ documentURL: URL) {
 //        //present doc in another window catalyst mode
 //        TXTSceneManager.open_doc_scene(self.windowx?.windowScene,documentURL)

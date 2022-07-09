@@ -9,7 +9,7 @@ import UIKit
 
 import UIKit
 
-class TXTPrefSceneWindow: UIWindow {
+class BANPrefSceneWindow: UIWindow {
     override init(windowScene: UIWindowScene){
         super.init(windowScene: windowScene)
     }
@@ -23,22 +23,22 @@ class TXTPrefSceneWindow: UIWindow {
 
 }
 
-class TXTPrefSceneScene: UIWindowScene {
+class BANPrefSceneScene: UIWindowScene {
     override init(session: UISceneSession, connectionOptions: UIScene.ConnectionOptions){
         super.init(session: session, connectionOptions: connectionOptions)
     }
 
     deinit {
-        //ALog.log_verbose("deinit BrowserScene \(String.pointer(session))")
+        ALog.log_verbose("deinit BANPrefSceneDelegate")
     }
 
 }
 
-class TXTPrefSceneDelegate: UIResponder, UIWindowSceneDelegate {
+class BANPrefSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     deinit {
-        //ALog.log_verbose("BrowserDocumentSceneDelegate deinit")
+        ALog.log_verbose("deinit BANPrefSceneDelegate")
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -47,17 +47,17 @@ class TXTPrefSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.forEach { uc in
-            TXTSceneManager.open_url(uc.url)
+            BANSceneManager.open_url(uc.url)
         }
     }
     
     
-    var windowx: TXTPrefSceneWindow?
-    let prefs = TXTPreferenceUITableViewController(style: .insetGrouped)
+    var windowx: BANPrefSceneWindow?
+    let prefs = BANPreferenceUITableViewController(style: .insetGrouped)
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let nav             = UINavigationController(rootViewController: prefs)
-        let window          = TXTPrefSceneWindow(windowScene: windowScene)
+        let window          = BANPrefSceneWindow(windowScene: windowScene)
         windowx             = window
         windowScene.title   = "Settings"
         #if targetEnvironment(macCatalyst)

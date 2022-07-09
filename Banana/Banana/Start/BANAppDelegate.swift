@@ -8,7 +8,7 @@
 import UIKit
 
 @main
-class TXTAppDelegate: UIResponder, UIApplicationDelegate {
+class BANAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
@@ -58,7 +58,7 @@ class TXTAppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: - SCENE
     func application(_ app: UIApplication, open inputURL: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         guard inputURL.isFileURL else { return false }
-        return TXTSceneManager.open_url(inputURL)
+        return BANSceneManager.open_url(inputURL)
     }
     
     func application(_ application: UIApplication,
@@ -67,20 +67,20 @@ class TXTAppDelegate: UIResponder, UIApplicationDelegate {
         
 
         if let docUrl = options.urlContexts.first {
-            let sceneConfig = TXTActivityIdentifier.document.sceneConfiguration()
-            connectingSceneSession.userInfo  = [TXTSceneKeys.doc_url.rawValue :docUrl.url.path]
+            let sceneConfig = BANActivityIdentifier.document.sceneConfiguration()
+            connectingSceneSession.userInfo  = [BANSceneKeys.doc_url.rawValue :docUrl.url.path]
             return sceneConfig
         }
 
-        var currentActivityIdentifier: TXTActivityIdentifier? = nil
+        var currentActivityIdentifier: BANActivityIdentifier? = nil
         if let first = options.userActivities.first {
-            currentActivityIdentifier = TXTActivityIdentifier(rawValue: first.activityType)
+            currentActivityIdentifier = BANActivityIdentifier(rawValue: first.activityType)
         }
 
         if let activity = currentActivityIdentifier {
             return activity.sceneConfiguration()
         }
-        let activity    = currentActivityIdentifier ?? TXTActivityIdentifier.file_browser
+        let activity    = currentActivityIdentifier ?? BANActivityIdentifier.file_browser
         let sceneConfig = activity.sceneConfiguration()
         return sceneConfig
     }

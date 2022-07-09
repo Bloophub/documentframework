@@ -9,7 +9,7 @@
 import UIKit
 
 //https://www.techotopia.com/index.php/Managing_Files_using_the_iOS_8_UIDocument_Class
-class TXTDocument: UIDocument {
+class BANDocument: UIDocument {
     
     private var contentx = ""
     func update_content(_ html: String){
@@ -54,7 +54,7 @@ class TXTDocument: UIDocument {
 //    }
     
     deinit {
-        ALog.log_verbose("deinit TXTDocument")
+        ALog.log_verbose("deinit BANDocument")
     }
     
 //    override func updateUserActivityState(_ userActivity: NSUserActivity) {

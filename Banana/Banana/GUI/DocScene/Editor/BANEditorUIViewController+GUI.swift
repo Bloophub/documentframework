@@ -20,7 +20,7 @@ import WebKit
 //    }
 //}
 
-extension TXTEditorUIViewController {
+extension BANEditorUIViewController {
 
     internal func build_ui(){
         

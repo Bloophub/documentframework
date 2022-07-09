@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Dynamic
 
-class CatalystProxy {
+class BANCatalystProxy {
 
     @discardableResult static func intercept_window_close_button(_ window: UIWindow?) -> Bool{
         guard let windowx = window, let nsWindowx = windowx.nsWindow else {

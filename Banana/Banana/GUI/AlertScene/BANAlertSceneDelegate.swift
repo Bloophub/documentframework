@@ -7,17 +7,17 @@
 
 import UIKit
 
-class TXTAlertSceneWindow: UIWindow {
+class BANAlertSceneWindow: UIWindow {
     
 }
 
-class TXTAlertScene: UIWindowScene {
+class BANAlertScene: UIWindowScene {
     deinit{
         ALog.log_verbose("deinit AlertScene")
     }
 }
 
-class TXTAlertSceneDelegate: UIResponder, UIWindowSceneDelegate {
+class BANAlertSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     var guid = UUID().uuidString
@@ -44,12 +44,12 @@ class TXTAlertSceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard !message.isEmpty else {
             ALog.log_error("no_messagex")
-            TXTSceneManager.close_scene(session)
+            BANSceneManager.close_scene(session)
             return
         }
 
-        let window                                      = TXTAlertSceneWindow(windowScene: windowScene)
-        let alertVC                                     = TXTAlertViewController()
+        let window                                      = BANAlertSceneWindow(windowScene: windowScene)
+        let alertVC                                     = BANAlertViewController()
         alertVC.alertTitle                              = title
         alertVC.alertMessage                            = message
         

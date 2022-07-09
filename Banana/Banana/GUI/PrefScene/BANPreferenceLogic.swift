@@ -13,7 +13,7 @@ let pref_noty = NSNotification.Name(rawValue: "pref_noty")
 let pref_editor_preference  = "pref_editor_preference"
 let pref_appearance         = "pref_appearance"
 
-class TXTPreference {
+class BANPreference {
     func set_value(_ key: String, _ value : Any){
         UserDefaults.standard.set(value, forKey: key)
         NotificationCenter.default.post(name: pref_noty, object: key)
@@ -23,7 +23,7 @@ class TXTPreference {
     }
 
     @MainActor
-    func set_appearance(_ value : TXTAppearance){
+    func set_appearance(_ value : BANAppearance){
         UserDefaults.standard.set(value.rawValue, forKey: pref_appearance)
         update_appearance()
     }
@@ -75,11 +75,11 @@ class TXTPreference {
 
     }
     
-    func get_appearance() -> TXTAppearance{
+    func get_appearance() -> BANAppearance{
         if let i = UserDefaults.standard.object(forKey: pref_appearance) as? Int {
-            return TXTAppearance(rawValue: i) ?? TXTAppearance.UseSystem
+            return BANAppearance(rawValue: i) ?? BANAppearance.UseSystem
         }
-        return TXTAppearance.UseSystem
+        return BANAppearance.UseSystem
     }
 }
     

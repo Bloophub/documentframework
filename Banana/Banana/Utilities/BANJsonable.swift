@@ -6,12 +6,12 @@
 //
 
 import Foundation
-enum json_error: Error{
+enum ban_json_error: Error{
     case json_serialize
 }
 
 
-class CloneUtility {
+class BANCloneUtility {
     class func xclone<T:Codable>(_ obj: T) throws -> T {
         let jsonEncoder = JSONEncoder()
         let data        = try jsonEncoder.encode(obj)
@@ -34,14 +34,14 @@ class CloneUtility {
 //    }
 //}
 
-protocol Jsonable: Codable, CustomStringConvertible {
+protocol BANJsonable: Codable, CustomStringConvertible {
     func to_json() throws -> String
     func to_json_pretty() throws -> String
     func to_json_data() throws -> Data
     func to_json_dict() throws -> [String:Any]
 }
 
-extension Jsonable {
+extension BANJsonable {
     func to_json() throws -> String {
 //        jsonEncoder.outputFormatting = .prettyPrinted
         let jsonString  = String(data: try to_json_data(), encoding: .utf8) ?? ""
@@ -59,7 +59,7 @@ extension Jsonable {
     }
     func to_json_dict() throws -> [String:Any] {
         guard let dict = try JSONSerialization.jsonObject(with: try to_json_data(), options: []) as? [String:Any] else {
-            throw json_error.json_serialize
+            throw ban_json_error.json_serialize
         }
         return dict
     }

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TXTPreferenceUITableViewController: TXTBaseUITableViewController {
+class BANPreferenceUITableViewController: BANBaseUITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +72,7 @@ class TXTPreferenceUITableViewController: TXTBaseUITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                let vc  = TXTPreferenceAppearanceUITableViewController(style: .insetGrouped)
+                let vc  = BANPreferenceAppearanceUITableViewController(style: .insetGrouped)
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }

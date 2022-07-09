@@ -8,13 +8,13 @@
 import Foundation
 import UIKit
 
-protocol TXTErrorProtocol {
+protocol BANErrorProtocol {
     func present_error(_ error: Error)
     func present_error_text(_ text: String)
     func present_alert(_ alert: UIAlertController)
 }
 
-extension TXTErrorProtocol where Self: UIViewController {
+extension BANErrorProtocol where Self: UIViewController {
     func present_alert(_ alert: UIAlertController) {
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
@@ -39,10 +39,10 @@ extension TXTErrorProtocol where Self: UIViewController {
     }
 }
 
-class TXTBaseUIViewController: UIViewController, TXTErrorProtocol {
+class BANBaseUIViewController: UIViewController, BANErrorProtocol {
     
 }
 
-class TXTBaseUITableViewController: UITableViewController, TXTErrorProtocol {
+class BANBaseUITableViewController: UITableViewController, BANErrorProtocol {
     
 }

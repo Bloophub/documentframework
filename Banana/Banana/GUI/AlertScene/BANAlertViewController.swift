@@ -7,9 +7,7 @@
 
 import UIKit
 
-
-
-class TXTAlertViewController: UIViewController {
+class BANAlertViewController: UIViewController {
     
     let alertyTitleLbl      = UILabel()
     let alertyMessageLbl    = UILabel()
@@ -105,7 +103,7 @@ class TXTAlertViewController: UIViewController {
         if let sceneSession = view.window?.windowScene?.session {
             let options = UIWindowSceneDestructionRequestOptions()
             options.windowDismissalAnimation = .standard
-            TXTSceneManager.close_scene(sceneSession)
+            BANSceneManager.close_scene(sceneSession)
         }
     }
 

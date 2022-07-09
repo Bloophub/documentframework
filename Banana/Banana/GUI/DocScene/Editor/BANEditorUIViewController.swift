@@ -14,13 +14,13 @@ import WebKit
 //https://microsoft.github.io/monaco-editor/api/modules/monaco.editor.html
 //https://microsoft.github.io/monaco-editor/playground.html#creating-the-editor-hard-wrapping
 
-class TXTEditorUIViewController : TXTBaseUIViewController {
+class BANEditorUIViewController : BANBaseUIViewController {
     weak var lang_btn: UIBarButtonItem?
-    weak var docdelegatex: TXTDocumentManagerProtocol?
-    lazy var wk_webview: TXTEditorWKWebView = {
+    weak var docdelegatex: BANDocumentManagerProtocol?
+    lazy var wk_webview: BANEditorWKWebView = {
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
-        let webViewx = TXTEditorWKWebView(frame: self.view.frame, configuration: webConfiguration)
+        let webViewx = BANEditorWKWebView(frame: self.view.frame, configuration: webConfiguration)
         webViewx.allowsLinkPreview = false
         webViewx.loadHTMLString("", baseURL: nil)
         webViewx.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
@@ -41,7 +41,7 @@ class TXTEditorUIViewController : TXTBaseUIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
  #if targetEnvironment(macCatalyst)
-         CatalystProxy.intercept_window_close_button(view.window)
+         BANCatalystProxy.intercept_window_close_button(view.window)
 //        let nww = view.window?.nsWindow
 //        nww?.close()
  #endif
@@ -57,14 +57,14 @@ class TXTEditorUIViewController : TXTBaseUIViewController {
     }
 }
 
-extension TXTEditorUIViewController {
+extension BANEditorUIViewController {
     
     internal func load_editor_html(){
         do{
-            guard let del   = docdelegatex  else { throw TXTError.error_doc }
+            guard let del   = docdelegatex  else { throw BANError.error_doc }
             let js_conn     = del.get_js_connector()
             js_conn.register_connector(wk_webview)
-            guard let edit_url = TXTAPPURLs.get_editor_url() else { throw TXTError.error_doc }
+            guard let edit_url = TXTAPPURLs.get_editor_url() else { throw BANError.error_doc }
             try js_conn.load_url(edit_url)
         }catch{
             present_error(error)

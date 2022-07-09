@@ -8,7 +8,7 @@
 import UIKit
 import Dynamic
 
-class TXTPreferenceAppearanceUITableViewController : TXTBaseUITableViewController {
+class BANPreferenceAppearanceUITableViewController : BANBaseUITableViewController {
         
         private let cell_identifier =  "TXTPreferenceAppearanceUITableViewControllerCell"
         
@@ -19,11 +19,11 @@ class TXTPreferenceAppearanceUITableViewController : TXTBaseUITableViewControlle
         }
         
         
-        lazy var data: [TXTAppearance] = {
+        lazy var data: [BANAppearance] = {
             return [
-                TXTAppearance.UseSystem,
-                TXTAppearance.DarkMode,
-                TXTAppearance.LightMode
+                BANAppearance.UseSystem,
+                BANAppearance.DarkMode,
+                BANAppearance.LightMode
             ]
         }()
         

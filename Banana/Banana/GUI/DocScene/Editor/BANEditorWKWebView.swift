@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import WebKit
 
-class TXTEditorWKWebView: WKWebView {
+class BANEditorWKWebView: WKWebView {
     
     override init(frame: CGRect, configuration: WKWebViewConfiguration) {
         super.init(frame: frame, configuration: configuration)

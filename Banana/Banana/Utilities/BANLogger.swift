@@ -7,32 +7,24 @@
 //
 
 import Foundation
-//import CocoaLumberjack
 import CocoaLumberjackSwift
-//import AppCenter
-//import AppCenterAnalytics
 
-//enum app_environment {
-//    case develop
-//    case production
-//}
-
-let ALog = AMZLogger.shared()
-@objc class AMZLogger: NSObject {
-    private static var sharedLogger: AMZLogger = {
-        let networkManager = AMZLogger()
+let ALog = BANLogger.shared()
+@objc class BANLogger: NSObject {
+    private static var sharedLogger: BANLogger = {
+        let networkManager = BANLogger()
         return networkManager
     }()
     
-    @objc class func shared() -> AMZLogger {
+    @objc class func shared() -> BANLogger {
         return sharedLogger
     }
     private var log_run = 0
     var fileLogger: DDFileLogger?
-    var environment: app_environment = .develop
+    var environment: BANAPPENV = .develop
     
     //#if os(OSX)
-    func create_logger(env: app_environment){
+    func create_logger(env: BANAPPENV){
        
         environment     = env
         
@@ -142,3 +134,34 @@ class AMZLogFormatter: NSObject, DDLogFormatter {
     //    }
 }
 
+//import UIKit
+//import CocoaLumberjack
+//import CocoaLumberjackSwift
+
+class BANLogFormatter : NSObject,DDLogFormatter
+{
+    func format(message logMessage: DDLogMessage) -> String? {
+        return "[\(logMessage.fileName):\(logMessage.function!):\(logMessage.line) \(stringForLogLevel(logLevel: logMessage.level))]: \(logMessage.message)"
+    }
+
+
+    private func stringForLogLevel(logLevel:DDLogLevel) -> String
+    {
+        switch(logLevel)
+        {
+        case .error:
+            return "E";
+        case .warning:
+            return "W";
+        case .info:
+            return "I";
+        case .debug:
+            return "D";
+        case .verbose:
+            return "V";
+        default:
+            break;
+        }
+        return ""
+    }
+}
