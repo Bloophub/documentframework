@@ -8,11 +8,21 @@
 import Foundation
 import UIKit
 
-public let environment             : BANAPPENV = .develop
-public let app_group               : String            = "group.com.int.TextEditor"
-public var APP_FOLDER_NAME         : String            = "BAN"
-public var APPNAME                 : String            = "Text Editor"
-public let XPref                   = BANPreference()
+//public let environment             : BANAPPENV = .develop
+//public let app_group               : String            = "group.com.int.TextEditor"
+//public var APP_FOLDER_NAME         : String            = "BAN"
+//public var APPNAME                 : String            = "Text Editor"
+//public let XPref                   = BANPreference()
+
+public let XConfig  = BANConfig()
+public var XPref    = BANPreference()
+public class BANConfig{
+    public let ENV                     : BANAPPENV         = .develop
+    public let APP_GROUP               : String            = "group.com.int.TextEditor"
+    public var APP_FOLDER_NAME         : String            = "BAN"
+    public var APPNAME                 : String            = "Text Editor"
+//    public let PREF                     :BANPreference     = BANPreference()
+}
 
 public enum BANAPPENV {
     case develop

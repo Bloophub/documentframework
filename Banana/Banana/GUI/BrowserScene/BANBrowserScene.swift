@@ -47,10 +47,13 @@ open class BANBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
             BANSceneManager.open_url(uc.url)
         }
     }
-    
+
+    open func get_browser_root_view_controller() -> BANDocumentBrowserViewController {
+        return BANDocumentBrowserViewController(forOpening: nil)
+    }
     
     public var windowx: BANBrowserDocumentWindow?
-    public let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil)
+//    public let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil)
     public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
@@ -58,7 +61,7 @@ open class BANBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window                                      = BANBrowserDocumentWindow(windowScene: windowScene)
         windowx                                         = window
 //        browser_controllerx.browser_delegatex           = self
-        window.rootViewController                       = browser_controllerx
+        window.rootViewController                       = get_browser_root_view_controller()
         window.makeKeyAndVisible()
         windowScene.title   = "Browser"
 //        #if targetEnvironment(macCatalyst)

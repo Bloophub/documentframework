@@ -11,11 +11,12 @@ import UIKit
 @MainActor
 open class BANSceneManager {
 
-    static func get_app_file_types() -> [String] {
-        return []
-    }
+    public static var app_file_types = ["html"]
     
-    static func get_editor_scenes() -> [BANDocumentScene] {
+//    public static func get_app_file_types() -> [String] {
+//        return []
+//    }
+    public static func get_editor_scenes() -> [BANDocumentScene] {
         return UIApplication.shared.connectedScenes.compactMap { scene in
             scene as? BANDocumentScene
         }
@@ -27,7 +28,7 @@ open class BANSceneManager {
 //        return documentScenes
     }
 
-    static func file_browser_scene() -> UIWindowScene?{
+    public static func file_browser_scene() -> UIWindowScene?{
         return UIApplication.shared.connectedScenes.first { scene in
             //            if let wsc = scene as? UIWindowScene {
             //                wsc.windows.forEach { win in
@@ -39,13 +40,13 @@ open class BANSceneManager {
         } as? UIWindowScene
     }
 
-    static func preferences_scene() -> UIWindowScene?{
+    public static func preferences_scene() -> UIWindowScene?{
         return UIApplication.shared.connectedScenes.first { scene in
             return scene.session.configuration.name == BANSceneConfiguration.preferences_config.rawValue
         } as? UIWindowScene
     }
 
-    private static func open_preferences_scene(_ vc: UIViewController?, _ errorHandler: ((Error) -> Void)? = nil){
+    public static func open_preferences_scene(_ vc: UIViewController?, _ errorHandler: ((Error) -> Void)? = nil){
         if let vcx = vc, !BANPlatform.isCatalyst {
             let pref    = BANPreferenceUITableViewController( style: .insetGrouped)
             let nav     = UINavigationController(rootViewController: pref)
@@ -60,7 +61,7 @@ open class BANSceneManager {
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: errorHandler)
     }
 
-    static func open_file_browser_scene(_ errorHandler: ((Error) -> Void)? = nil){
+    public static func open_file_browser_scene(_ errorHandler: ((Error) -> Void)? = nil){
         if file_browser_scene() != nil {
             return
         }
@@ -69,7 +70,7 @@ open class BANSceneManager {
     }
 
     
-    static func open_doc_scene( _ scene: UIWindowScene?,_ url: URL) {
+    public static func open_doc_scene( _ scene: UIWindowScene?,_ url: URL) {
         if doc_scene(url) != nil{
             return
         }
@@ -81,7 +82,7 @@ open class BANSceneManager {
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: userActivity, options: nil, errorHandler: nil)
     }
     
-    static func doc_scene(_ url: URL) -> UIWindowScene? {
+    public static func doc_scene(_ url: URL) -> UIWindowScene? {
         let ws = UIApplication.shared.connectedScenes.first { scene in
             if scene.session.configuration.name == BANSceneConfiguration.document_config.rawValue,
                let bd = scene.delegate as? BANDocumentSceneDelegate {
@@ -96,14 +97,13 @@ open class BANSceneManager {
     }
     
     
-    @discardableResult static func open_url(_ url: URL) -> Bool{
+    @discardableResult public static func open_url(_ url: URL) -> Bool{
         let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil) // was nil -> [.html]
         browser_controllerx.presentDocument(at: url)
         return true
     }
     
-    
-    static func show_pref_menu(_ vc: UIViewController? = nil) {
+    public static func show_pref_menu(_ vc: UIViewController? = nil) {
         if BANPlatform.isCatalyst {
             open_preferences_scene(nil)
             return
@@ -113,12 +113,12 @@ open class BANSceneManager {
         }
         //hedge case called without VC find the current editor
         else if let del = UIApplication.get_key_window()?.windowScene?.delegate as? BANBrowserDocumentSceneDelegate,
-                let doc_int = del.browser_controllerx.doc_int_manager  {
+                let doc_int = del.get_browser_root_view_controller().get_doc_int_manager()  {
             doc_int.show_doc_int_pref()
         }
     }
     
-    static func close_scene(_ session: UISceneSession, _ errorHandler: ((Error) -> Void)? = nil) {
+    public static func close_scene(_ session: UISceneSession, _ errorHandler: ((Error) -> Void)? = nil) {
         UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { err_destroy in
             ALog.log_error("close_scene \(err_destroy) \(session)")
             errorHandler?(err_destroy)
@@ -126,13 +126,13 @@ open class BANSceneManager {
     }
     
 #if targetEnvironment(macCatalyst)
-    static func open_alert_scene(_ title: String, _ message: String, _ errorHandler: ((Error) -> Void)? = nil){
+    public static func open_alert_scene(_ title: String, _ message: String, _ errorHandler: ((Error) -> Void)? = nil){
         let activity = NSUserActivity(activityType: BANActivityIdentifier.alert_window.rawValue)
         activity.addUserInfoEntries(from: ["title" : title])
         activity.addUserInfoEntries(from: ["message" : message])
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: errorHandler)
     }
-    static func open_alert_error_scene(_ title: String, _ error: Error, _ errorHandler: ((Error) -> Void)? = nil){
+    public static func open_alert_error_scene(_ title: String, _ error: Error, _ errorHandler: ((Error) -> Void)? = nil){
         let activity = NSUserActivity(activityType: BANActivityIdentifier.alert_window.rawValue)
         activity.addUserInfoEntries(from: ["title" : title])
         activity.addUserInfoEntries(from: ["message" : error.localizedDescription])
@@ -141,14 +141,14 @@ open class BANSceneManager {
 #endif
 
 #if targetEnvironment(macCatalyst)
-    static func new_doc() throws{
-        let file_types: [String] = get_app_file_types()
-        guard let existing_document_url: URL = TXTAPPURLs.basic_document_url() else {
+    public static func new_doc() throws{
+        guard let existing_document_url: URL = BANAppUrls.basic_document_url() else {
             ALog.log_error("new_doc basic_document_url")
             throw BANError.error_doc
         }
 
         let file_name = "";
+        let file_types: [String] = app_file_types
         guard let new_doc_url = BANCatalystProxy.save_modal_panel(file_name,file_types) else {
             ALog.log_error("new_doc save_modal_panel")
             throw BANError.error_doc

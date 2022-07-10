@@ -26,15 +26,13 @@
 		D8A1EF14287A2471007C2592 /* BANJSConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF06287A2470007C2592 /* BANJSConnector.swift */; };
 		D8A1EF15287A2471007C2592 /* BANDocumentScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF07287A2470007C2592 /* BANDocumentScene.swift */; };
 		D8A1EF16287A2471007C2592 /* BANDocumentInterfaceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF08287A2470007C2592 /* BANDocumentInterfaceManager.swift */; };
-		D8A1EF17287A2471007C2592 /* BANEditorWKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF0A287A2470007C2592 /* BANEditorWKWebView.swift */; };
 		D8A1EF18287A2471007C2592 /* BANEditorUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF0B287A2470007C2592 /* BANEditorUIViewController.swift */; };
-		D8A1EF19287A2471007C2592 /* BANEditorUIViewController+GUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF0C287A2470007C2592 /* BANEditorUIViewController+GUI.swift */; };
 		D8A1EF1A287A2471007C2592 /* BANAlertSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF0E287A2471007C2592 /* BANAlertSceneDelegate.swift */; };
 		D8A1EF1B287A2471007C2592 /* BANAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF0F287A2471007C2592 /* BANAlertViewController.swift */; };
 		D8A1EF1C287A2471007C2592 /* BANDocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF11287A2471007C2592 /* BANDocumentBrowserViewController.swift */; };
 		D8A1EF1D287A2471007C2592 /* BANBrowserScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF12287A2471007C2592 /* BANBrowserScene.swift */; };
-		D8A1EF21287A2491007C2592 /* TXTAPPURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF1F287A2491007C2592 /* TXTAPPURLs.swift */; };
-		D8A1EF22287A2491007C2592 /* TXTAPPMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF20287A2491007C2592 /* TXTAPPMenu.swift */; };
+		D8A1EF21287A2491007C2592 /* BANAppUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF1F287A2491007C2592 /* BANAppUrls.swift */; };
+		D8A1EF22287A2491007C2592 /* BANAppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF20287A2491007C2592 /* BANAppMenu.swift */; };
 		D8A1EF24287A254D007C2592 /* BANAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF23287A254D007C2592 /* BANAppDelegate.swift */; };
 		D8A1EF31287A349F007C2592 /* BANSceneIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF30287A349F007C2592 /* BANSceneIdentifier.swift */; };
 /* End PBXBuildFile section */
@@ -58,15 +56,13 @@
 		D8A1EF06287A2470007C2592 /* BANJSConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANJSConnector.swift; sourceTree = "<group>"; };
 		D8A1EF07287A2470007C2592 /* BANDocumentScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANDocumentScene.swift; sourceTree = "<group>"; };
 		D8A1EF08287A2470007C2592 /* BANDocumentInterfaceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANDocumentInterfaceManager.swift; sourceTree = "<group>"; };
-		D8A1EF0A287A2470007C2592 /* BANEditorWKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANEditorWKWebView.swift; sourceTree = "<group>"; };
 		D8A1EF0B287A2470007C2592 /* BANEditorUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANEditorUIViewController.swift; sourceTree = "<group>"; };
-		D8A1EF0C287A2470007C2592 /* BANEditorUIViewController+GUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BANEditorUIViewController+GUI.swift"; sourceTree = "<group>"; };
 		D8A1EF0E287A2471007C2592 /* BANAlertSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANAlertSceneDelegate.swift; sourceTree = "<group>"; };
 		D8A1EF0F287A2471007C2592 /* BANAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANAlertViewController.swift; sourceTree = "<group>"; };
 		D8A1EF11287A2471007C2592 /* BANDocumentBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANDocumentBrowserViewController.swift; sourceTree = "<group>"; };
 		D8A1EF12287A2471007C2592 /* BANBrowserScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANBrowserScene.swift; sourceTree = "<group>"; };
-		D8A1EF1F287A2491007C2592 /* TXTAPPURLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TXTAPPURLs.swift; sourceTree = "<group>"; };
-		D8A1EF20287A2491007C2592 /* TXTAPPMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TXTAPPMenu.swift; sourceTree = "<group>"; };
+		D8A1EF1F287A2491007C2592 /* BANAppUrls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANAppUrls.swift; sourceTree = "<group>"; };
+		D8A1EF20287A2491007C2592 /* BANAppMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANAppMenu.swift; sourceTree = "<group>"; };
 		D8A1EF23287A254D007C2592 /* BANAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANAppDelegate.swift; sourceTree = "<group>"; };
 		D8A1EF30287A349F007C2592 /* BANSceneIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BANSceneIdentifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -171,19 +167,9 @@
 				D8A1EF06287A2470007C2592 /* BANJSConnector.swift */,
 				D8A1EF07287A2470007C2592 /* BANDocumentScene.swift */,
 				D8A1EF08287A2470007C2592 /* BANDocumentInterfaceManager.swift */,
-				D8A1EF09287A2470007C2592 /* Editor */,
+				D8A1EF0B287A2470007C2592 /* BANEditorUIViewController.swift */,
 			);
 			path = DocScene;
-			sourceTree = "<group>";
-		};
-		D8A1EF09287A2470007C2592 /* Editor */ = {
-			isa = PBXGroup;
-			children = (
-				D8A1EF0A287A2470007C2592 /* BANEditorWKWebView.swift */,
-				D8A1EF0B287A2470007C2592 /* BANEditorUIViewController.swift */,
-				D8A1EF0C287A2470007C2592 /* BANEditorUIViewController+GUI.swift */,
-			);
-			path = Editor;
 			sourceTree = "<group>";
 		};
 		D8A1EF0D287A2471007C2592 /* AlertScene */ = {
@@ -198,8 +184,8 @@
 		D8A1EF10287A2471007C2592 /* BrowserScene */ = {
 			isa = PBXGroup;
 			children = (
-				D8A1EF11287A2471007C2592 /* BANDocumentBrowserViewController.swift */,
 				D8A1EF12287A2471007C2592 /* BANBrowserScene.swift */,
+				D8A1EF11287A2471007C2592 /* BANDocumentBrowserViewController.swift */,
 			);
 			path = BrowserScene;
 			sourceTree = "<group>";
@@ -209,8 +195,8 @@
 			children = (
 				D8A1EF23287A254D007C2592 /* BANAppDelegate.swift */,
 				D8A1EEEB287A2353007C2592 /* BANVars.swift */,
-				D8A1EF20287A2491007C2592 /* TXTAPPMenu.swift */,
-				D8A1EF1F287A2491007C2592 /* TXTAPPURLs.swift */,
+				D8A1EF20287A2491007C2592 /* BANAppMenu.swift */,
+				D8A1EF1F287A2491007C2592 /* BANAppUrls.swift */,
 			);
 			path = Start;
 			sourceTree = "<group>";
@@ -303,7 +289,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8A1EF17287A2471007C2592 /* BANEditorWKWebView.swift in Sources */,
 				D8A1EEEA287A232E007C2592 /* BANPreferenceLogic.swift in Sources */,
 				D8A1EF1C287A2471007C2592 /* BANDocumentBrowserViewController.swift in Sources */,
 				D8A1EF18287A2471007C2592 /* BANEditorUIViewController.swift in Sources */,
@@ -312,7 +297,7 @@
 				D8A1EEFD287A240B007C2592 /* BANEUIView.swift in Sources */,
 				D8A1EEFF287A240B007C2592 /* BANJsonable.swift in Sources */,
 				D8A1EEF0287A237C007C2592 /* BANLogger.swift in Sources */,
-				D8A1EF22287A2491007C2592 /* TXTAPPMenu.swift in Sources */,
+				D8A1EF22287A2491007C2592 /* BANAppMenu.swift in Sources */,
 				D8A1EEFE287A240B007C2592 /* BANExt.swift in Sources */,
 				D8A1EF1D287A2471007C2592 /* BANBrowserScene.swift in Sources */,
 				D8A1EF01287A2430007C2592 /* BANPreferenceUITableViewController.swift in Sources */,
@@ -321,11 +306,10 @@
 				D8A1EF03287A244E007C2592 /* BANPreferenceAppearanceUITableViewController.swift in Sources */,
 				D8A1EF14287A2471007C2592 /* BANJSConnector.swift in Sources */,
 				D8A1EEFC287A240B007C2592 /* BANCatalystProxy.swift in Sources */,
-				D8A1EF21287A2491007C2592 /* TXTAPPURLs.swift in Sources */,
+				D8A1EF21287A2491007C2592 /* BANAppUrls.swift in Sources */,
 				D8A1EEE2287A22F9007C2592 /* BANSceneManager.swift in Sources */,
 				D8A1EF15287A2471007C2592 /* BANDocumentScene.swift in Sources */,
 				D8A1EF24287A254D007C2592 /* BANAppDelegate.swift in Sources */,
-				D8A1EF19287A2471007C2592 /* BANEditorUIViewController+GUI.swift in Sources */,
 				D8A1EEE9287A232E007C2592 /* BANPrefScene.swift in Sources */,
 				D8A1EF16287A2471007C2592 /* BANDocumentInterfaceManager.swift in Sources */,
 				D8A1EF1B287A2471007C2592 /* BANAlertViewController.swift in Sources */,

@@ -19,16 +19,14 @@ public protocol BANDocumentManagerProtocol: AnyObject, BANErrorProtocol {
     func doc_ready()
     func doc_edited()
 
-//    func run_editor_command_action(_ command: UICommand);
-//    func run_editor_actionid(_ actid: String)
+//    func doc_root_uiviewcontroller() -> UIViewController?
 }
 
 open class BANDocumentInterfaceManager: UIResponder {
-//    var current_lang: TXTLang = .js
-    var file_url: URL! = nil
-    var doc: BANDocument! = nil
-    let js_connector = BANJSConnector()
-    let editor_vc = BANEditorUIViewController()
+    open var file_url: URL! = nil
+    open var doc: BANDocument! = nil
+    open var js_connector = BANJSConnector()
+    open var editor_vc = BANEditorUIViewController()
 
     var my_next: UIResponder?
     override public var next: UIResponder? { get {
@@ -37,15 +35,47 @@ open class BANDocumentInterfaceManager: UIResponder {
         }
         return super.next
     }}
+    
+//    public required override init(){
+//        super.init()
+//    }
 
-    class func build(_ url: URL) -> BANDocumentInterfaceManager{
-        let di                          = BANDocumentInterfaceManager()
-        di.file_url                     = url
-        di.doc                          = BANDocument(fileURL: url)
-        di.js_connector.docdelegatex    = di
-        di.editor_vc.docdelegatex       = di
-        return di
+    public init(_ url: URL) {
+        super.init()
+        file_url = url
+        doc      = build_doc(url)
+
     }
+    
+//    open class func build(_ url: URL) -> Self{
+//        let di                          = Self()
+//        di.file_url                     = url
+//        di.doc                          = di.build_doc(url)
+//        return di
+//    }
+    
+    open func build_doc(_ url: URL) -> BANDocument{
+        BANDocument(fileURL: url)
+    }
+    
+    open func build_js_connector() -> BANJSConnector{
+        let conn            = BANJSConnector()
+        conn.docdelegatex   = self
+        return conn
+    }
+
+    open func build_controllers() -> UIViewController{
+        editor_vc               = BANEditorUIViewController()
+        editor_vc.docdelegatex  = self
+        return UINavigationController(rootViewController: editor_vc)
+    }
+    
+    open func build_gui() -> UIViewController{
+        js_connector    = build_js_connector()
+        let nav         = build_controllers()
+        return nav
+    }
+
     
     @MainActor
     func relase_all(){
@@ -75,6 +105,10 @@ extension BANDocumentInterfaceManager {
 
 //MARK: - DOC DEL
 extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
+    
+//    public func doc_root_uiviewcontroller() -> UIViewController?{
+//
+//    }
     
     public func get_js_connector() -> BANJSConnector {
         js_connector
@@ -147,18 +181,11 @@ extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
         BANSceneManager.show_pref_menu(editor_vc)
     }
 
-//    func run_editor_command_action(_ command: UICommand){
-//        
-//    }
-//    
-//    func run_editor_actionid(_ actid: String){
-//        
-//    }
 }
 
 
-//MARK: - ACTION
-extension BANDocumentInterfaceManager : TXTMainMenuActionProtocol{
+//MARK: - ACTION SAVE
+extension BANDocumentInterfaceManager : BANMainMenuActionProtocol{
     public func file_menu_save_action(_ sender: Any?){
         Task{
             _ = await doc_will_save()
@@ -217,31 +244,10 @@ extension BANDocumentInterfaceManager {
 
 }
 
-extension BANDocumentInterfaceManager : TXTMainMenuEditorProtocol{
-    public func editor_menu_run_editor_action(_ sender: Any?) {
+extension BANDocumentInterfaceManager : BANMainMenuEditorProtocol{
+    open func editor_menu_run_editor_action(_ sender: Any?) {
 //        run_monaco_editor_action(sender)
     }
-    
-//    private func run_monaco_editor_action(_ sender: Any?){
-//        guard let command = sender as? UICommand else { return }
-//        run_monaco_editor_command_action(command)
-//    }
-//
-//    func run_monaco_editor_command_action(_ command: UICommand){
-//        guard let dict = command.propertyList as? [String: String], let actid = dict["act"] else { return }
-//        run_monaco_editor_actionid(actid)
-//    }
-//
-//    func run_monaco_editor_actionid(_ actid: String){
-//        Task{
-//            do{
-//                try await js_connector.run_js_editor_action(actid)
-//            }catch{
-//                present_error(error)
-//            }
-//        }
-//    }
-
 }
 
 //MARK: - ERROR

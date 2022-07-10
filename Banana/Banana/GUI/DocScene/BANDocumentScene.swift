@@ -8,15 +8,15 @@
 import Foundation
 import UIKit
 
-class BANDocumentSceneWindow: UIWindow {
+open class BANDocumentSceneWindow: UIWindow {
     override init(windowScene: UIWindowScene){
         super.init(windowScene: windowScene)
     }
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     deinit{
-        ALog.log_verbose("deinit DocumentWindow")
+        ALog.log_verbose("deinit BANDocumentSceneWindow")
     }
 
     
@@ -37,9 +37,9 @@ class BANDocumentSceneWindow: UIWindow {
 
 }
 
-class BANDocumentScene: UIWindowScene {
+open class BANDocumentScene: UIWindowScene {
     var my_next: UIResponder?
-    override var next: UIResponder? { get {
+    override public var next: UIResponder? { get {
         if let my_nextx = my_next {
             return my_nextx
         }
@@ -51,15 +51,18 @@ class BANDocumentScene: UIWindowScene {
     }
 
     deinit {
-        //ALog.log_verbose("deinit BrowserScene \(String.pointer(session))")
+        ALog.log_verbose("deinit BANDocumentScene")
+    }
+}
+open class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    
+    deinit {
+        ALog.log_verbose("deinit BANDocumentSceneDelegate")
     }
 
-}
-
-class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var doc_int_manager: BANDocumentInterfaceManager?
     var my_next: UIResponder?
-    override var next: UIResponder? { get {
+    override public var next: UIResponder? { get {
         if let my_nextx = my_next {
             return my_nextx
         }
@@ -67,26 +70,31 @@ class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }}
     
 
-    func get_doc_int_manager() -> BANDocumentInterfaceManager?{
-        doc_int_manager
-    }
-    
-    deinit {
-        //ALog.log_verbose("BrowserDocumentSceneDelegate deinit")
-    }
-    
-    func sceneDidDisconnect(_ scene: UIScene) {
+    public func sceneDidDisconnect(_ scene: UIScene) {
         ALog.log_verbose("TXTDocumentSceneDelegate sceneDidDisconnect \(scene.session.configuration.name ?? "")")
     }
     
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    public func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.forEach { uc in
             BANSceneManager.open_url(uc.url)
         }
     }
     
-    var windowx: BANDocumentSceneWindow?
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    
+    public func get_doc_int_manager() -> BANDocumentInterfaceManager?{
+        doc_int_manager
+    }
+    
+    open func build_doc_int_manager(_ url: URL) -> BANDocumentInterfaceManager{
+        BANDocumentInterfaceManager(url)
+    }
+    
+//    open func get_doc_root_view_controller() -> UIViewController {
+//        return BANPreferenceUITableViewController(style: .insetGrouped)
+//    }
+
+    public var windowx: BANDocumentSceneWindow?
+    public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         var doc_url: URL?
@@ -105,12 +113,12 @@ class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        let doc_int_managerx    = BANDocumentInterfaceManager.build(doc_urlx)
-        doc_int_manager         = doc_int_managerx
-        let nav                 = UINavigationController(rootViewController: doc_int_managerx.editor_vc)
         let window              = BANDocumentSceneWindow(windowScene: windowScene)
         windowx                 = window
         
+        let doc_int_managerx    = build_doc_int_manager(doc_urlx)
+        doc_int_manager         = doc_int_managerx
+//        let nav                 = UINavigationController(rootViewController: doc_int_managerx.editor_vc)
         //RESPONDER
         //"TXTDocumentSceneWindow:false\n -> TXTDocumentScene:false\n -> UIApplication:false\n -> AppDelegate:false\n"
         
@@ -141,8 +149,8 @@ class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         #endif
 
-//        browser_controllerx.browser_delegatex           = self
-        window.rootViewController                       = nav
+        let nav = doc_int_managerx.build_gui()
+        window.rootViewController  = nav
         window.makeKeyAndVisible()
 
     }

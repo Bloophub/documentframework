@@ -16,7 +16,7 @@ import UniformTypeIdentifiers
 
 //https://openradar.appspot.com/FB8894765
 //protocol TXTDocumentBrowserViewControllerProtocol : AnyObject {
-//    func browser_present_doc(_ doc_url: URL)
+//    func browser_build_doc_int_manager(_ doc_url: URL)
 ////    func browser_get_current_scene() -> UIScene?
 //}
 
@@ -66,7 +66,7 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
     // MARK: UIDocumentBrowserViewControllerDelegate
     public func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
         
-        let newDocumentURL: URL? = TXTAPPURLs.basic_document_url()
+        let newDocumentURL: URL? = BANAppUrls.basic_document_url()
         
         if newDocumentURL != nil {
             importHandler(newDocumentURL, .copy)
@@ -96,10 +96,18 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
         }
     }
     
+    open func build_doc_int_manager(_ url: URL) -> BANDocumentInterfaceManager{
+        BANDocumentInterfaceManager(url)
+    }
+    
+    public func get_doc_int_manager() -> BANDocumentInterfaceManager?{
+        doc_int_manager
+    }
+    
     // MARK: FileDocument Presentation
     public var doc_int_manager: BANDocumentInterfaceManager?
     //https://stackoverflow.com/questions/67459304/how-to-avoid-strange-behavior-when-scene-based-document-mac-catalyst-app-reopens
-    func presentDocument(at documentURL: URL) {
+    public func presentDocument(at documentURL: URL) {
         ALog.log_verbose("presentDocument documentURL: \(documentURL)")
         
         if !documentURL.startAccessingSecurityScopedResource() {
@@ -112,7 +120,7 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
 //            browser_delegatex?.browser_present_doc(documentURL)
             return
         }
-        let doc_int_managerx        = BANDocumentInterfaceManager.build(documentURL)
+        let doc_int_managerx        = build_doc_int_manager(documentURL)
         doc_int_manager             = doc_int_managerx
         let nav                     = UINavigationController(rootViewController: doc_int_managerx.editor_vc)
         nav.modalPresentationStyle  = .fullScreen

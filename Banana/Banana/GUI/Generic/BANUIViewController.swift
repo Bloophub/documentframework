@@ -23,7 +23,7 @@ extension BANErrorProtocol where Self: UIViewController {
     
     public func present_error(_ error: Error){
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: APPNAME, message: error.localizedDescription, preferredStyle: .alert)
+            let alertController = UIAlertController(title: XConfig.APPNAME, message: error.localizedDescription, preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true, completion: nil)
@@ -31,7 +31,7 @@ extension BANErrorProtocol where Self: UIViewController {
     }
     public func present_error_text(_ text: String){
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: APPNAME, message: text, preferredStyle: .alert)
+            let alertController = UIAlertController(title: XConfig.APPNAME, message: text, preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true, completion: nil)

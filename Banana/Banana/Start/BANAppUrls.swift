@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class TXTAPPURLs{
+public class BANAppUrls{
     public static var base_url: URL?
     public static var edit_url: URL?
 
@@ -20,15 +20,15 @@ public class TXTAPPURLs{
         return newDocumentURL
     }
 
-    
-    public class func create_urls() throws {
+//    XConfig.app_group XConfig.APP_FOLDER_NAME
+    public class func create_urls(_ app_group: String, _ app_folder_name: String) throws {
         guard let group_url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: app_group) else {
             return
         }
 
         let group_app_support = group_url.appendingPathComponent("Library")
             .appendingPathComponent("Application Support")
-            .appendingPathComponent(APP_FOLDER_NAME)
+            .appendingPathComponent(app_folder_name)
         
         try FileManager.default.createDirectory(at: group_app_support, withIntermediateDirectories: true, attributes: nil)
         base_url = group_app_support

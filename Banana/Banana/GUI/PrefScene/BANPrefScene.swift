@@ -22,7 +22,7 @@ open class BANPrefSceneWindow: UIWindow {
 
 }
 
-open class BANPrefSceneScene: UIWindowScene {
+open class BANPrefScene: UIWindowScene {
     override init(session: UISceneSession, connectionOptions: UIScene.ConnectionOptions){
         super.init(session: session, connectionOptions: connectionOptions)
     }
@@ -51,13 +51,13 @@ open class BANPrefSceneDelegate: UIResponder, UIWindowSceneDelegate {
     public var windowx: BANPrefSceneWindow?
 //    public let prefs = BANPreferenceUITableViewController(style: .insetGrouped)
     
-    open func get_root_view_controller() -> UIViewController {
+    open func get_pref_root_view_controller() -> UIViewController {
         return BANPreferenceUITableViewController(style: .insetGrouped)
     }
     
     public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let nav             = UINavigationController(rootViewController: get_root_view_controller())
+        let nav             = UINavigationController(rootViewController: get_pref_root_view_controller())
         let window          = BANPrefSceneWindow(windowScene: windowScene)
         windowx             = window
         windowScene.title   = "Settings"

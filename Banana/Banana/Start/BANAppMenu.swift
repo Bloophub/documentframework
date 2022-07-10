@@ -9,17 +9,23 @@ import Foundation
 import UIKit
 
 
-@objc protocol TXTMainMenuGeneralProtocol: AnyObject {
+@objc public protocol BANMainMenuGeneralProtocol: AnyObject {
     @objc optional func menu_pref_action(_ sender: Any?)
     @objc optional func file_menu_new_action(_ sender: Any?)
     @objc optional func file_menu_open_action(_ sender: Any?)
 }
 
 /// Editor Protocols
-@objc protocol TXTMainMenuActionProtocol: AnyObject {
+@objc public protocol BANMainMenuActionProtocol: AnyObject {
     @objc optional func file_menu_save_action(_ sender: Any?)
     @objc optional func file_menu_saveas_action(_ sender: Any?)
 }
+
+
+@objc public protocol BANMainMenuEditorProtocol: AnyObject {
+    func editor_menu_run_editor_action(_ sender: Any?)
+}
+
 //
 //(
 //    "editor.action.toggleHighContrast",
@@ -138,12 +144,6 @@ import UIKit
 //    "editor.action.inlineSuggest.trigger"
 //)
 
-@objc protocol TXTMainMenuEditorProtocol: AnyObject {
-//    func editor_menu_format_doc(_ sender: Any?)
-//    func editor_menu_format_selection(_ sender: Any?)
-    func editor_menu_run_editor_action(_ sender: Any?)
-}
-
 //
 ///// WebView Protocols
 //@objc protocol HEXMainMenuWebViewActionProtocol {
@@ -158,9 +158,9 @@ import UIKit
 //    func connection_menu_ftp_action(_ sender: Any?)
 //}
 
-class TXTAppMenu : UIResponder{
+open class BANAppMenu : UIResponder{
     
-    init(with builder: UIMenuBuilder) {
+    public init(with builder: UIMenuBuilder) {
         
         /// Removal
         builder.remove(menu: UIMenu.Identifier.services)
@@ -172,18 +172,18 @@ class TXTAppMenu : UIResponder{
         
 
         /// Preference Menu
-        let pref_menu = TXTAppMenu.pref_menu()
+        let pref_menu = BANAppMenu.pref_menu()
         builder.insertSibling(pref_menu, afterMenu: .about)
 
         if BANPlatform.isCatalyst{
             /// File Menu
-            let file_sec_1_menu = TXTAppMenu.crud_menu()
+            let file_sec_1_menu = BANAppMenu.crud_menu()
             builder.insertChild(file_sec_1_menu, atStartOfMenu: .file)
 
-            let file_sec_2_menu = TXTAppMenu.separator_menu()
+            let file_sec_2_menu = BANAppMenu.separator_menu()
             builder.insertSibling(file_sec_2_menu, afterMenu: file_sec_1_menu.identifier)
 
-            let file_sec_3_menu = TXTAppMenu.new_doc_menu()
+            let file_sec_3_menu = BANAppMenu.new_doc_menu()
             builder.insertSibling(file_sec_3_menu, afterMenu: file_sec_2_menu.identifier)
         }
 //
@@ -240,7 +240,7 @@ class TXTAppMenu : UIResponder{
         let prefCommand =
             UIKeyCommand(title: NSLocalizedString("Preferences", comment: ""),
                          image: nil,
-                         action: #selector(TXTMainMenuGeneralProtocol.menu_pref_action(_:)),
+                         action: #selector(BANMainMenuGeneralProtocol.menu_pref_action(_:)),
                          input: ",",
                          modifierFlags: .command,
                          propertyList: ["open", "true"])
@@ -261,7 +261,7 @@ class TXTAppMenu : UIResponder{
         let openCommand =
             UIKeyCommand(title: NSLocalizedString("Open", comment: ""),
                          image: nil,
-                         action: #selector(TXTMainMenuGeneralProtocol.file_menu_open_action(_:)),
+                         action: #selector(BANMainMenuGeneralProtocol.file_menu_open_action(_:)),
                          input: "O",
                          modifierFlags: .command,
                          propertyList: ["open", "true"])
@@ -269,7 +269,7 @@ class TXTAppMenu : UIResponder{
         let saveCommand =
             UIKeyCommand(title: NSLocalizedString("Save", comment: ""),
                          image: nil,
-                         action: #selector(TXTMainMenuActionProtocol.file_menu_save_action(_:)),
+                         action: #selector(BANMainMenuActionProtocol.file_menu_save_action(_:)),
                          input: "S",
                          modifierFlags: .command,
                          propertyList: nil)
@@ -277,7 +277,7 @@ class TXTAppMenu : UIResponder{
         let saveAsCommand =
             UIKeyCommand(title: NSLocalizedString("Save As", comment: ""),
                          image: nil,
-                         action: #selector(TXTMainMenuActionProtocol.file_menu_saveas_action(_:)),
+                         action: #selector(BANMainMenuActionProtocol.file_menu_saveas_action(_:)),
                          input: "S",
                          modifierFlags: [.command, .shift],
                          propertyList: nil)
@@ -300,7 +300,7 @@ class TXTAppMenu : UIResponder{
         let exportCommand =
             UIKeyCommand(title: NSLocalizedString("New Document", comment: ""),
                          image: nil,
-                         action: #selector(TXTMainMenuGeneralProtocol.file_menu_new_action(_:)),
+                         action: #selector(BANMainMenuGeneralProtocol.file_menu_new_action(_:)),
                          input: "N",
                          modifierFlags: .command,
                          propertyList: nil)
@@ -314,226 +314,225 @@ class TXTAppMenu : UIResponder{
         return Menu
     }
     
-    class func editor_menu() -> UIMenu {
-        return UIMenu(title: "Editor", image: nil, identifier: UIMenu.Identifier("editor_menu"), options: [], children: editor_key_command_menu_actions())
-    }
-    
-    
-    private class func editor_key_command_menu_actions() -> [UIMenuElement] {
-        
-//        let sel: Selector = #selector(TXTMainMenuGeneralProtocol.menu_pref_action(_:))
-        let sel: Selector = #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:))
-        //TXTMainMenuGeneralProtocol.menu_pref_action(_:)
-        
-        var childrens = [UIMenuElement]()
-        if true {
-            var childrensx = [UIMenuElement]()
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Format Doc", comment: ""),image: nil,
-                                      action: sel,
-                                      input: "F",modifierFlags: [.shift, .alternate],propertyList: ["act": "editor.action.formatDocument"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Format Selection", comment: ""),image: nil,
-                                      action: sel,
-                                      input: "KF",modifierFlags: [.command],propertyList: ["act": "editor.action.formatSelection"])
-                childrensx.append(kc)
-            }
-
-            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
-            childrens.append(menu)
-        }
-        
-        //ZOOM
-        if true {
-            var childrensx = [UIMenuElement]()
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Font Zoom In", comment: ""),image: nil,
-                                      action: sel,
-                                      input: "+", modifierFlags: [.command],propertyList: ["act": "editor.action.fontZoomIn"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Font Zoom Out", comment: ""),image: nil,
-                                      action: #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:)),
-                                      input: "-",modifierFlags: [.command], propertyList: ["act": "editor.action.fontZoomOut"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Font Zoom Reset", comment: ""),image: nil,
-                                      action: sel,
-                                      input: "0",modifierFlags: [.command],propertyList: ["act": "editor.action.fontZoomReset"])
-                childrensx.append(kc)
-            }
-
-            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
-            childrens.append(menu)
-        }
-        
-        //COMMAND PALETTE
-        if true {
-            var childrensx = [UIMenuElement]()
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Command Palette", comment: ""),image: nil,
-                                      action: sel,
-                                      input: UIKeyCommand.f1 ,modifierFlags: [],propertyList: ["act": "editor.action.quickCommand"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Rename", comment: ""),image: nil,
-                                      action: sel,
-                                      input: UIKeyCommand.f2 ,modifierFlags: [],propertyList: ["act": "editor.action.onTypeRename"])
-                childrensx.append(kc)
-            }
-            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
-            childrens.append(menu)
-        }
-        
-        //COMMAND Fold
-        if true {
-            var childrensx = [UIMenuElement]()
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Fold", comment: ""),image: nil,
-                                      action: sel,
-                                      input: "[" ,modifierFlags: [.command,.alternate],propertyList: ["act": "editor.fold"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UIKeyCommand(title: NSLocalizedString("Unfold", comment: ""),image: nil,
-                                      action: sel,
-                                      input: "]" ,modifierFlags: [.command,.alternate],propertyList: ["act": "editor.unfold"])
-                childrensx.append(kc)
-            }
-            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
-            childrens.append(menu)
-        }
-        
-        if true {
-            var childrensx = [UIMenuElement]()
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Uppercase", comment: ""),image: nil,
-                                      action: #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:)),
-                                      propertyList: ["act": "editor.action.transformToUppercase"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Lowercase", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.transformToLowercase"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Snakecase", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.transformToSnakecase"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Titlecase", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.transformToTitlecase"])
-                childrensx.append(kc)
-            }
-            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
-            childrens.append(menu)
-        }
-        
-        if true {
-            var childrensx = [UIMenuElement]()
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Duplicate Selection", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.duplicateSelection"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Copy Lines Up", comment: ""),image: nil,
-                                      action: #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:)),
-                                      propertyList: ["act": "editor.action.copyLinesUpAction"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Copy Lines Down", comment: ""),image: nil,
-                                      action: #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:)),
-                                      propertyList: ["act": "editor.action.copyLinesDownAction"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Move Lines Up", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.moveLinesUpAction"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Move Lines Down", comment: ""),image: nil,
-                                      action: #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:)),
-                                      propertyList: ["act": "editor.action.moveLinesDownAction"])
-                childrens.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Sort Lines Ascending", comment: ""),image: nil,
-                                      action: #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:)),
-                                      propertyList: ["act": "editor.action.sortLinesAscending"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Sort Lines Descending", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.sortLinesDescending"])
-                childrens.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Remove Duplicate Lines", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.removeDuplicateLines"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Trim Trailing Whitespace", comment: ""),image: nil,
-                                      action: #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:)),
-                                      propertyList: ["act": "editor.action.trimTrailingWhitespace"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Delete Lines", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.deleteLines"])
-                childrens.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Indent Lines", comment: ""),image: nil,
-                                      action: #selector(TXTMainMenuEditorProtocol.editor_menu_run_editor_action(_:)),
-                                      propertyList: ["act": "editor.action.indentLines"])
-                childrensx.append(kc)
-            }
-            if true {
-                let kc = UICommand(title: NSLocalizedString("Outdent Lines", comment: ""),image: nil,
-                                      action: sel,
-                                      propertyList: ["act": "editor.action.outdentLines"])
-                childrensx.append(kc)
-            }
-            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
-            childrens.append(menu)
-
-        }
-
-//        //    "editor.action.copyLinesUpAction",
-//        //    "editor.action.copyLinesDownAction",
-//        //    "editor.action.duplicateSelection",
-//        //    "editor.action.moveLinesUpAction",
-//        //    "editor.action.moveLinesDownAction",
-//        //    "editor.action.sortLinesAscending",
-//        //    "editor.action.sortLinesDescending",
-//        //    "editor.action.removeDuplicateLines",
-//        //    "editor.action.trimTrailingWhitespace",
-//        //    "editor.action.deleteLines",
-//        //    "editor.action.indentLines",
-//        //    "editor.action.outdentLines",
+//    class func editor_menu() -> UIMenu {
+//        return UIMenu(title: "Editor", image: nil, identifier: UIMenu.Identifier("editor_menu"), options: [], children: editor_key_command_menu_actions())
+//    }
 //
+//    private class func editor_key_command_menu_actions() -> [UIMenuElement] {
 //
-        return childrens
-    }
+////        let sel: Selector = #selector(TXTMainMenuGeneralProtocol.menu_pref_action(_:))
+//        let sel: Selector = #selector(BANMainMenuEditorProtocol.editor_menu_run_editor_action(_:))
+//        //TXTMainMenuGeneralProtocol.menu_pref_action(_:)
+//
+//        var childrens = [UIMenuElement]()
+//        if true {
+//            var childrensx = [UIMenuElement]()
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Format Doc", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: "F",modifierFlags: [.shift, .alternate],propertyList: ["act": "editor.action.formatDocument"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Format Selection", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: "KF",modifierFlags: [.command],propertyList: ["act": "editor.action.formatSelection"])
+//                childrensx.append(kc)
+//            }
+//
+//            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
+//            childrens.append(menu)
+//        }
+//
+//        //ZOOM
+//        if true {
+//            var childrensx = [UIMenuElement]()
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Font Zoom In", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: "+", modifierFlags: [.command],propertyList: ["act": "editor.action.fontZoomIn"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Font Zoom Out", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: "-",modifierFlags: [.command], propertyList: ["act": "editor.action.fontZoomOut"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Font Zoom Reset", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: "0",modifierFlags: [.command],propertyList: ["act": "editor.action.fontZoomReset"])
+//                childrensx.append(kc)
+//            }
+//
+//            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
+//            childrens.append(menu)
+//        }
+//
+//        //COMMAND PALETTE
+//        if true {
+//            var childrensx = [UIMenuElement]()
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Command Palette", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: UIKeyCommand.f1 ,modifierFlags: [],propertyList: ["act": "editor.action.quickCommand"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Rename", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: UIKeyCommand.f2 ,modifierFlags: [],propertyList: ["act": "editor.action.onTypeRename"])
+//                childrensx.append(kc)
+//            }
+//            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
+//            childrens.append(menu)
+//        }
+//
+//        //COMMAND Fold
+//        if true {
+//            var childrensx = [UIMenuElement]()
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Fold", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: "[" ,modifierFlags: [.command,.alternate],propertyList: ["act": "editor.fold"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UIKeyCommand(title: NSLocalizedString("Unfold", comment: ""),image: nil,
+//                                      action: sel,
+//                                      input: "]" ,modifierFlags: [.command,.alternate],propertyList: ["act": "editor.unfold"])
+//                childrensx.append(kc)
+//            }
+//            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
+//            childrens.append(menu)
+//        }
+//
+//        if true {
+//            var childrensx = [UIMenuElement]()
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Uppercase", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.transformToUppercase"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Lowercase", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.transformToLowercase"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Snakecase", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.transformToSnakecase"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Titlecase", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.transformToTitlecase"])
+//                childrensx.append(kc)
+//            }
+//            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
+//            childrens.append(menu)
+//        }
+//
+//        if true {
+//            var childrensx = [UIMenuElement]()
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Duplicate Selection", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.duplicateSelection"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Copy Lines Up", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.copyLinesUpAction"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Copy Lines Down", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.copyLinesDownAction"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Move Lines Up", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.moveLinesUpAction"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Move Lines Down", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.moveLinesDownAction"])
+//                childrens.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Sort Lines Ascending", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.sortLinesAscending"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Sort Lines Descending", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.sortLinesDescending"])
+//                childrens.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Remove Duplicate Lines", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.removeDuplicateLines"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Trim Trailing Whitespace", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.trimTrailingWhitespace"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Delete Lines", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.deleteLines"])
+//                childrens.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Indent Lines", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.indentLines"])
+//                childrensx.append(kc)
+//            }
+//            if true {
+//                let kc = UICommand(title: NSLocalizedString("Outdent Lines", comment: ""),image: nil,
+//                                      action: sel,
+//                                      propertyList: ["act": "editor.action.outdentLines"])
+//                childrensx.append(kc)
+//            }
+//            let menu = UIMenu(title: "",image: nil,identifier: nil,options: .displayInline, children: childrensx)
+//            childrens.append(menu)
+//
+//        }
+//
+////        //    "editor.action.copyLinesUpAction",
+////        //    "editor.action.copyLinesDownAction",
+////        //    "editor.action.duplicateSelection",
+////        //    "editor.action.moveLinesUpAction",
+////        //    "editor.action.moveLinesDownAction",
+////        //    "editor.action.sortLinesAscending",
+////        //    "editor.action.sortLinesDescending",
+////        //    "editor.action.removeDuplicateLines",
+////        //    "editor.action.trimTrailingWhitespace",
+////        //    "editor.action.deleteLines",
+////        //    "editor.action.indentLines",
+////        //    "editor.action.outdentLines",
+////
+////
+//        return childrens
+//    }
     
 //    class func separator_command() -> UIKeyCommand{
 //        let kc = UIKeyCommand(title: NSLocalizedString("Rename", comment: ""),image: nil,
@@ -544,8 +543,45 @@ class TXTAppMenu : UIResponder{
 //    }
 }
 
-//extension TXTAppMenu {
+//MARK: - AppDelegate
+//extension BANAppDelegate: BANMainMenuGeneralProtocol {
 //    
+//    override func validate(_ command: UICommand) {
+//        if command.action == #selector(file_menu_open_action(_:)) {
+//            command.attributes = []
+//            if BANSceneManager.file_browser_scene() != nil {
+//                command.attributes = .disabled
+//            }
+//        }
+//    }
+//    
+//    @objc func file_menu_open_action(_ sender: Any?) {
+//        #if targetEnvironment(macCatalyst)
+//        BANSceneManager.open_file_browser_scene { err in
+//            BANSceneManager.open_alert_error_scene(XConfig.APPNAME, err)
+//        }
+//        #endif
+//    }
+//    
+//    @objc func file_menu_new_action(_ sender: Any?) {
+//        #if targetEnvironment(macCatalyst)
+//        do{
+//            try BANSceneManager.new_doc()
+//        }catch {
+//            ALog.log_error("file_menu_new_action \(error)")
+//            BANSceneManager.open_alert_error_scene(XConfig.APPNAME, error)
+//        }
+//        #endif
+//    }
+//    
+//    @objc func menu_pref_action(_ sender: Any?) {
+//        BANSceneManager.show_pref_menu(nil)
+//    }
+//    
+//}
+
+//extension TXTAppMenu {
+//
 //    class func uimenuelement_to_action(_ el: UIMenuElement, _ handler: @escaping (UICommand,UIAction) -> Void) -> UIMenuElement?{
 //        if let command = el as? UICommand {
 //            return keycommand_to_action(command, handler)
@@ -559,7 +595,7 @@ class TXTAppMenu : UIResponder{
 //        }
 //        return nil
 //    }
-//    
+//
 //    class func keycommand_to_action(_ command: UICommand, _ handler: @escaping (UICommand,UIAction) -> Void) -> UIMenuElement?{
 //        UIAction(title: command.title, subtitle: command.subtitle, image: command.image,
 //                 identifier: nil, discoverabilityTitle: command.discoverabilityTitle,
@@ -582,42 +618,6 @@ class TXTAppMenu : UIResponder{
 //    }
 //}
 
-//MARK: - AppDelegate
-extension BANAppDelegate: TXTMainMenuGeneralProtocol {
-    
-    override func validate(_ command: UICommand) {
-        if command.action == #selector(file_menu_open_action(_:)) {
-            command.attributes = []
-            if BANSceneManager.file_browser_scene() != nil {
-                command.attributes = .disabled
-            }
-        }
-    }
-    
-    @objc func file_menu_open_action(_ sender: Any?) {
-        #if targetEnvironment(macCatalyst)
-        BANSceneManager.open_file_browser_scene { err in
-            BANSceneManager.open_alert_error_scene(APPNAME, err)
-        }
-        #endif
-    }
-    
-    @objc func file_menu_new_action(_ sender: Any?) {
-        #if targetEnvironment(macCatalyst)
-        do{
-            try BANSceneManager.new_doc()
-        }catch {
-            ALog.log_error("file_menu_new_action \(error)")
-            BANSceneManager.open_alert_error_scene(APPNAME, error)
-        }
-        #endif
-    }
-    
-    @objc func menu_pref_action(_ sender: Any?) {
-        BANSceneManager.show_pref_menu(nil)
-    }
-    
-}
 
 /*
  

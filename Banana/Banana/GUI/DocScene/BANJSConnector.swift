@@ -23,7 +23,7 @@ open class BANJSConnector: NSObject {
     
     
     @MainActor
-    @discardableResult func load_url(_ urlx: URL?) throws -> WKNavigation?{
+    @discardableResult public func load_url(_ urlx: URL?) throws -> WKNavigation?{
         guard let wv = self.web_view else {
             throw BANError.no_webview
         }
@@ -37,7 +37,7 @@ open class BANJSConnector: NSObject {
     }
     
     
-    func get_js_content() async throws -> String? {
+    public func get_js_content() async throws -> String? {
         try await run_editor_js("get_content()") as? String
     }
 }

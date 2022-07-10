@@ -7,13 +7,13 @@
 
 import UIKit
 
-public class BANAlertSceneWindow: UIWindow {
+open class BANAlertSceneWindow: UIWindow {
     deinit{
         ALog.log_verbose("deinit BANAlertSceneWindow")
     }
 }
 
-public class BANAlertScene: UIWindowScene {
+open class BANAlertScene: UIWindowScene {
     deinit{
         ALog.log_verbose("deinit BANAlertScene")
     }
