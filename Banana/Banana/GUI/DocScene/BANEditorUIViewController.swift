@@ -73,7 +73,7 @@ extension BANEditorUIViewController {
             guard let del   = docdelegatex  else { throw BANError.error_doc }
             let js_conn     = del.get_js_connector()
             js_conn.register_connector(wk_webview)
-            guard let edit_url = BANAppUrls.get_editor_url() else { throw BANError.error_doc }
+            guard let edit_url = XUrl.get_editor_url() else { throw BANError.error_doc }
             try js_conn.load_url(edit_url)
         }catch{
             present_error(error)

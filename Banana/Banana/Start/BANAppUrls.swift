@@ -7,22 +7,28 @@
 
 import Foundation
 
-public class BANAppUrls{
-    public static var base_url: URL?
-    public static var edit_url: URL?
+open class BANAppUrls{
+    public var base_url: URL?
+    public var edit_url: URL?
 
-    public static var editor_pathx = "editor.html"
-    public class func get_editor_url() -> URL?{
+    public var app_file_types = ["html"]
+
+    public init(){
+        
+    }
+    
+    public var editor_pathx = "editor.html"
+    public func get_editor_url() -> URL?{
         edit_url?.appendingPathComponent(editor_pathx)
     }
     
-    public static var basic_document_urlx: URL? = Bundle.main.url(forResource: "new_page", withExtension: "html")
+    public var basic_doc_urlx: URL? = Bundle.main.url(forResource: "new_page", withExtension: "html")
 
-    public class func basic_document_url() -> URL?{
-        return basic_document_urlx
+    public func basic_document_url() -> URL?{
+        return basic_doc_urlx
     }
 
-    public class func create_urls(_ app_group: String, _ app_folder_name: String) throws {
+    public func create_urls(_ app_group: String, _ app_folder_name: String) throws {
         guard let group_url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: app_group) else {
             return
         }

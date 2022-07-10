@@ -65,7 +65,7 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
     
     // MARK: UIDocumentBrowserViewControllerDelegate
     public func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
-        let newDocumentURL: URL? = BANAppUrls.basic_document_url()
+        let newDocumentURL: URL? = XUrl.basic_document_url()
         if newDocumentURL != nil {
             importHandler(newDocumentURL, .copy)
         } else {

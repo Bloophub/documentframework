@@ -11,7 +11,7 @@ import UIKit
 @MainActor
 open class BANSceneManager {
 
-    public static var app_file_types = ["html"]
+//    public static var app_file_types = ["html"]
     
 //    public static func get_app_file_types() -> [String] {
 //        return []
@@ -142,13 +142,13 @@ open class BANSceneManager {
 
 #if targetEnvironment(macCatalyst)
     public static func new_doc() throws{
-        guard let existing_document_url: URL = BANAppUrls.basic_document_url() else {
+        guard let existing_document_url: URL = XUrl.basic_document_url() else {
             ALog.log_error("new_doc basic_document_url")
             throw BANError.error_doc
         }
 
         let file_name = "";
-        let file_types: [String] = app_file_types
+        let file_types: [String] = XUrl.app_file_types
         guard let new_doc_url = BANCatalystProxy.save_modal_panel(file_name,file_types) else {
             ALog.log_error("new_doc save_modal_panel")
             throw BANError.error_doc
