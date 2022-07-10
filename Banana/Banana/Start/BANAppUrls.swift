@@ -11,8 +11,9 @@ public class BANAppUrls{
     public static var base_url: URL?
     public static var edit_url: URL?
 
+    public static var editor_pathx = "editor.html"
     public class func get_editor_url() -> URL?{
-        edit_url?.appendingPathComponent("editor.html")
+        edit_url?.appendingPathComponent(editor_pathx)
     }
     
     public static var basic_document_urlx: URL? = Bundle.main.url(forResource: "new_page", withExtension: "html")
