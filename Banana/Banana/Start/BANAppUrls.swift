@@ -20,7 +20,6 @@ public class BANAppUrls{
         return newDocumentURL
     }
 
-//    XConfig.app_group XConfig.APP_FOLDER_NAME
     public class func create_urls(_ app_group: String, _ app_folder_name: String) throws {
         guard let group_url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: app_group) else {
             return

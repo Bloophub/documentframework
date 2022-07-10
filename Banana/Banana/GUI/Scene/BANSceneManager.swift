@@ -78,7 +78,7 @@ open class BANSceneManager {
             close_scene(sc.session)
         }
         let userActivity = NSUserActivity(activityType: BANActivityIdentifier.document.rawValue)
-        userActivity.userInfo = [BANSceneKeys.doc_url.rawValue:url.path]
+        userActivity.userInfo = [BANSceneKeys.xdoc_url.rawValue:url.path]
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: userActivity, options: nil, errorHandler: nil)
     }
     

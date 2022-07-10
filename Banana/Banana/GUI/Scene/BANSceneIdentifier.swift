@@ -50,7 +50,7 @@ public enum BANSceneConfiguration: String{
 }
 
 public enum BANSceneKeys: String{
-    case doc_url            = "doc_url"
-    case open_url           = "open_url"
+    case xdoc_url            = "doc_url"
+    case xopen_url           = "open_url"
     
 }

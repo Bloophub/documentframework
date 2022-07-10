@@ -89,6 +89,18 @@ open class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
         BANDocumentInterfaceManager(url)
     }
     
+    public func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        get_user_activity()
+    }
+    
+    public func get_user_activity() -> NSUserActivity?{
+        guard let url           = doc_int_manager?.get_doc_url() else  { return  nil }
+        let userActivity        = NSUserActivity(activityType: BANActivityIdentifier.document.rawValue)
+        userActivity.title      = url.lastPathComponent
+        userActivity.userInfo   = [BANSceneKeys.xdoc_url.rawValue:url]
+        return userActivity
+    }
+        
 //    open func get_doc_root_view_controller() -> UIViewController {
 //        return BANPreferenceUITableViewController(style: .insetGrouped)
 //    }
@@ -100,10 +112,10 @@ open class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
         var doc_url: URL?
         //useractivity
         let act = connectionOptions.userActivities.first ?? session.stateRestorationActivity
-        if let first = act, let doc_path = first.userInfo?[BANSceneKeys.doc_url.rawValue] as? String{
+        if let first = act, let doc_path = first.userInfo?[BANSceneKeys.xdoc_url.rawValue] as? String{
             doc_url = URL(fileURLWithPath: doc_path)
             //session
-        } else if let userinfo = session.userInfo, let doc_path = userinfo[BANSceneKeys.doc_url.rawValue] as? String {
+        } else if let userinfo = session.userInfo, let doc_path = userinfo[BANSceneKeys.xdoc_url.rawValue] as? String {
             doc_url = URL(fileURLWithPath: doc_path)
         }
         
@@ -112,10 +124,18 @@ open class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
             BANSceneManager.close_scene(session)
             return
         }
-
+        
+        
         let window              = BANDocumentSceneWindow(windowScene: windowScene)
         windowx                 = window
         
+        windowScene.userActivity = get_user_activity()
+        windowScene.userActivity?.needsSave = true
+
+        window.userActivity = get_user_activity()
+        window.userActivity?.needsSave = true
+
+
         let doc_int_managerx    = build_doc_int_manager(doc_urlx)
         doc_int_manager         = doc_int_managerx
 //        let nav                 = UINavigationController(rootViewController: doc_int_managerx.editor_vc)

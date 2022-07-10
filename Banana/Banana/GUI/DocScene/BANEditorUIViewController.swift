@@ -179,7 +179,7 @@ open class BANEditorWKWebView: WKWebView {
         super.init(coder: coder)
     }
     
-    public func configure_wk_ui(){
+    open func configure_wk_ui(){
         isOpaque = false
         backgroundColor = UIColor.clear
 

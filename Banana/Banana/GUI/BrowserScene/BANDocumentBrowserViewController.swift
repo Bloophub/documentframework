@@ -121,9 +121,10 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
             return
         }
         let doc_int_managerx        = build_doc_int_manager(documentURL)
-        doc_int_manager             = doc_int_managerx
-        let nav                     = UINavigationController(rootViewController: doc_int_managerx.editor_vc)
+        let nav                     = doc_int_managerx.build_gui()
         nav.modalPresentationStyle  = .fullScreen
+        doc_int_manager             = doc_int_managerx
+//        let nav                     = UINavigationController(rootViewController: doc_int_managerx.editor_vc)
         
         //swap responder
         let app_responder_next      = self.next         //saving original responder

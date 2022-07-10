@@ -35,6 +35,7 @@
 		D8A1EF22287A2491007C2592 /* BANAppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF20287A2491007C2592 /* BANAppMenu.swift */; };
 		D8A1EF24287A254D007C2592 /* BANAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF23287A254D007C2592 /* BANAppDelegate.swift */; };
 		D8A1EF31287A349F007C2592 /* BANSceneIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF30287A349F007C2592 /* BANSceneIdentifier.swift */; };
+		D8A1EF38287A58BD007C2592 /* BANWKWebViewUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1EF37287A58BD007C2592 /* BANWKWebViewUIViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		D8A1EF20287A2491007C2592 /* BANAppMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANAppMenu.swift; sourceTree = "<group>"; };
 		D8A1EF23287A254D007C2592 /* BANAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BANAppDelegate.swift; sourceTree = "<group>"; };
 		D8A1EF30287A349F007C2592 /* BANSceneIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BANSceneIdentifier.swift; sourceTree = "<group>"; };
+		D8A1EF37287A58BD007C2592 /* BANWKWebViewUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BANWKWebViewUIViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				D8A1EEDE287A22E3007C2592 /* BANUIViewController.swift */,
+				D8A1EF37287A58BD007C2592 /* BANWKWebViewUIViewController.swift */,
 			);
 			path = Generic;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				D8A1EEFE287A240B007C2592 /* BANExt.swift in Sources */,
 				D8A1EF1D287A2471007C2592 /* BANBrowserScene.swift in Sources */,
 				D8A1EF01287A2430007C2592 /* BANPreferenceUITableViewController.swift in Sources */,
+				D8A1EF38287A58BD007C2592 /* BANWKWebViewUIViewController.swift in Sources */,
 				D8A1EEDF287A22E3007C2592 /* BANUIViewController.swift in Sources */,
 				D8A1EF13287A2471007C2592 /* BANDocument.swift in Sources */,
 				D8A1EF03287A244E007C2592 /* BANPreferenceAppearanceUITableViewController.swift in Sources */,
