@@ -17,14 +17,36 @@ import WebKit
 open class BANEditorUIViewController : BANBaseUIViewController {
     weak open var docdelegatex: BANDocumentManagerProtocol?
     open lazy var wk_webview: BANEditorWKWebView = {
+        let webConfiguration = build_wkwebconfiguration()
+        return build_wkwebview(webConfiguration)
+    }()
+//        let webConfiguration = WKWebViewConfiguration()
+//        webConfiguration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+//        webConfiguration.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+////        [theConfiguration setValue:@"TRUE" forKey:@"allowUniversalAccessFromFileURLs"];
+////        configs.setValue(true, forKey: "_allowUniversalAccessFromFileURLs")
+//
+//        let webViewx = BANEditorWKWebView(frame: self.view.frame, configuration: webConfiguration)
+//        webViewx.allowsLinkPreview = false
+//        webViewx.loadHTMLString("", baseURL: nil)
+//        webViewx.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+//        return webViewx
+//    }()
+    
+    open func build_wkwebconfiguration() -> WKWebViewConfiguration {
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
-        let webViewx = BANEditorWKWebView(frame: self.view.frame, configuration: webConfiguration)
+        webConfiguration.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+        webConfiguration.defaultWebpagePreferences.allowsContentJavaScript = true
+        return webConfiguration
+    }
+
+    open func build_wkwebview(_ webConfiguration: WKWebViewConfiguration) -> BANEditorWKWebView {
+        let webViewx = BANEditorWKWebView(frame: CGRect.zero, configuration: webConfiguration)
         webViewx.allowsLinkPreview = false
         webViewx.loadHTMLString("", baseURL: nil)
-        webViewx.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         return webViewx
-    }()
+    }
     
     override open func viewDidLoad() {
         super.viewDidLoad()
