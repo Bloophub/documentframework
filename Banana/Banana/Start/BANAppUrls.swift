@@ -15,9 +15,10 @@ public class BANAppUrls{
         edit_url?.appendingPathComponent("editor.html")
     }
     
+    public static var basic_document_urlx: URL? = Bundle.main.url(forResource: "new_page", withExtension: "html")
+
     public class func basic_document_url() -> URL?{
-        let newDocumentURL: URL? = Bundle.main.url(forResource: "new_page", withExtension: "html")
-        return newDocumentURL
+        return basic_document_urlx
     }
 
     public class func create_urls(_ app_group: String, _ app_folder_name: String) throws {
