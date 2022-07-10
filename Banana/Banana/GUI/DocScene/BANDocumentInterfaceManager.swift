@@ -149,7 +149,7 @@ extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
     public func editor_save_docx() async throws -> Bool{
         try await update_doc_contentx()
         let ret = await doc.save(to: get_doc_url(), for: .forOverwriting)
-        ALog.log_verbose("savex \(close)")
+        ALog.log_verbose("savex \(ret)")
         return ret
     }
     
