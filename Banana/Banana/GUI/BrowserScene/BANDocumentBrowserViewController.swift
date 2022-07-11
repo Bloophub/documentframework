@@ -15,13 +15,11 @@ import UniformTypeIdentifiers
 
 
 //https://openradar.appspot.com/FB8894765
-//protocol TXTDocumentBrowserViewControllerProtocol : AnyObject {
-//    func browser_build_doc_int_manager(_ doc_url: URL)
-////    func browser_get_current_scene() -> UIScene?
-//}
 
 
 open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
+    
+
     var my_next: UIResponder?
     override public var next: UIResponder? { get {
         if let my_nextx = my_next {
@@ -32,6 +30,14 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
 
     deinit {
         ALog.log_verbose("deinit TXTDocumentBrowserViewController")
+    }
+    
+    public override init(forOpening contentTypes: [UTType]?){
+        super.init(forOpening: contentTypes)
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override public func viewDidLoad() {
@@ -54,12 +60,13 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
     }
 
     override public func viewDidAppear(_ animated: Bool) {
-        #if targetEnvironment(macCatalyst)
-        let nww = view.window?.nsWindow
-//        if let v = nww?.isVisible.asBool,v  {
-            nww?.close()
-//        }
-        #endif
+        super.viewDidAppear(animated)
+//        #if targetEnvironment(macCatalyst)
+//        let nww = view.window?.nsWindow
+////        if let v = nww?.isVisible.asBool,v  {
+//            nww?.close()
+////        }
+//        #endif
     }
     
     open func get_template_url() -> URL?{

@@ -213,6 +213,7 @@ extension BANDocumentInterfaceManager : BANMainMenuActionProtocol{
 //MARK: - SAVEAS Catalyst
 extension BANDocumentInterfaceManager {
     
+    
     #if targetEnvironment(macCatalyst)
     public func scene_save_as_doc() throws {
         let fileManager = FileManager.default

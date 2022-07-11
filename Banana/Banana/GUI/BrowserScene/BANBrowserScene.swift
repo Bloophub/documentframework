@@ -26,16 +26,14 @@ open class BANBrowserScene: UIWindowScene {
     }
 
     deinit {
-        //ALog.log_verbose("deinit BrowserScene \(String.pointer(session))")
+        ALog.log_verbose("deinit BrowserScene")
     }
 
 }
 
 open class BANBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
-    
-    
     deinit {
-        //ALog.log_verbose("BrowserDocumentSceneDelegate deinit")
+        ALog.log_verbose("BANBrowserDocumentSceneDelegate deinit")
     }
     
     public func sceneDidDisconnect(_ scene: UIScene) {
@@ -53,14 +51,13 @@ open class BANBrowserDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     public var windowx: BANBrowserDocumentWindow?
-//    public let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil)
     public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+//        ALog.log_verbose("connectionOptions")
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
 
         let window                                      = BANBrowserDocumentWindow(windowScene: windowScene)
         windowx                                         = window
-//        browser_controllerx.browser_delegatex           = self
         window.rootViewController                       = get_browser_root_view_controller()
         window.makeKeyAndVisible()
         windowScene.title   = "Browser"

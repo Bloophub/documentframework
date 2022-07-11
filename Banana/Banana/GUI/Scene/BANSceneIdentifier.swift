@@ -9,10 +9,11 @@ import Foundation
 import UIKit
 
 public enum BANActivityIdentifier: String {
-    case document          = "document"
-    case file_browser      = "file_browser"
-    case preferences       = "preferences"
-    case alert_window      = "alert_window"
+    case document       = "document"
+    case file_browser   = "file_browser"
+    case preferences    = "preferences"
+    case alert_window   = "alert_window"
+    case new_doc        = "new_doc"
 
     public func sceneConfiguration() -> UISceneConfiguration {
         switch self {
@@ -36,6 +37,11 @@ public enum BANActivityIdentifier: String {
                 name: BANSceneConfiguration.alert_config.rawValue,
                 sessionRole: .windowApplication
             )
+        case .new_doc:
+            return UISceneConfiguration(
+                name: BANSceneConfiguration.new_document_config.rawValue,
+                sessionRole: .windowApplication
+            )
         }
     }
 }
@@ -44,7 +50,7 @@ public enum BANActivityIdentifier: String {
 public enum BANSceneConfiguration: String{
     case alert_config           = "Alert Configuration"
     case document_config        = "Document Configuration"
-//    case new_document_config    = "New Document Configuration"
+    case new_document_config    = "New Document Configuration"
     case default_config         = "Default Configuration"
     case preferences_config     = "Preferences Configuration"
 }
