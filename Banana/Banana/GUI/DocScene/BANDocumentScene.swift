@@ -101,10 +101,6 @@ open class BANDocumentSceneDelegate: UIResponder, UIWindowSceneDelegate {
         return userActivity
     }
         
-//    open func get_doc_root_view_controller() -> UIViewController {
-//        return BANPreferenceUITableViewController(style: .insetGrouped)
-//    }
-
     public var windowx: BANDocumentSceneWindow?
     public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }

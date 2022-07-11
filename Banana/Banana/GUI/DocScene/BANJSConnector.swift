@@ -101,7 +101,7 @@ extension BANJSConnector {
     //MainActor is a new attribute introduced in Swift 5.5 as a global actor providing an executor which performs its tasks on the main thread.
     @MainActor
     public func run_editor_js(_ script: String) async throws -> Any? {
-        //ALog.log_verbose("script \(script)")
+//        ALog.log_verbose("script \(script)")
         guard let wk = self.web_view else{
             ALog.log_warn("run_editor_js missing wk")
             throw BANError.no_webview

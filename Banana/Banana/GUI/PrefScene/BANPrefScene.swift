@@ -49,15 +49,13 @@ open class BANPrefSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     public var windowx: BANPrefSceneWindow?
-//    public let prefs = BANPreferenceUITableViewController(style: .insetGrouped)
-    
-    open func get_pref_root_view_controller() -> UIViewController {
-        return BANPreferenceUITableViewController(style: .insetGrouped)
-    }
+//    open func get_pref_root_view_controller() -> UIViewController {
+//        return BANPreferenceUITableViewController(style: .insetGrouped)
+//    }
     
     public func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let nav             = UINavigationController(rootViewController: get_pref_root_view_controller())
+        let nav             = UINavigationController(rootViewController: XConfig.get_preference_vc())
         let window          = BANPrefSceneWindow(windowScene: windowScene)
         windowx             = window
         windowScene.title   = "Settings"

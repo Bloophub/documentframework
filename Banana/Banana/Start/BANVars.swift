@@ -19,6 +19,10 @@ open class BANConfig{
     public var APP_GROUP               : String            = "group.com.int.TextEditor"
     public var APP_FOLDER_NAME         : String            = "BAN"
     public var APPNAME                 : String            = "APP"
+    
+    open func get_preference_vc() -> UIViewController{
+        BANPreferenceUITableViewController(style: .insetGrouped)
+    }
 }
 
 

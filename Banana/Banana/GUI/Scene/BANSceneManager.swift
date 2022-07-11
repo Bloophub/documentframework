@@ -48,7 +48,7 @@ open class BANSceneManager {
 
     public static func open_preferences_scene(_ vc: UIViewController?, _ errorHandler: ((Error) -> Void)? = nil){
         if let vcx = vc, !BANPlatform.isCatalyst {
-            let pref    = BANPreferenceUITableViewController( style: .insetGrouped)
+            let pref    = XConfig.get_preference_vc()
             let nav     = UINavigationController(rootViewController: pref)
             vcx.present(nav,animated: true)
             return
@@ -99,7 +99,7 @@ open class BANSceneManager {
     
     @discardableResult public static func open_url(_ url: URL) -> Bool{
         let browser_controllerx = BANDocumentBrowserViewController(forOpening: nil) // was nil -> [.html]
-        browser_controllerx.presentDocument(at: url)
+        browser_controllerx.present_document_at(url)
         return true
     }
     

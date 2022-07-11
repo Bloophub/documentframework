@@ -22,7 +22,6 @@ import UniformTypeIdentifiers
 
 
 open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
-//    weak var browser_delegatex: TXTDocumentBrowserViewControllerProtocol?
     var my_next: UIResponder?
     override public var next: UIResponder? { get {
         if let my_nextx = my_next {
@@ -63,9 +62,13 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
         #endif
     }
     
+    open func get_template_url() -> URL?{
+        XUrl.basic_document_url()
+    }
+    
     // MARK: UIDocumentBrowserViewControllerDelegate
-    public func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
-        let newDocumentURL: URL? = XUrl.basic_document_url()
+    open func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
+        let newDocumentURL: URL? = get_template_url()
         if newDocumentURL != nil {
             importHandler(newDocumentURL, .copy)
         } else {
@@ -79,12 +82,12 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
         
         // Present the FileDocument View Controller for the first document that was picked.
         // If you support picking multiple items, make sure you handle them all.
-        presentDocument(at: sourceURL)
+        present_document_at(sourceURL)
     }
     
     public func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
         // Present the FileDocument View Controller for the new newly created document
-        presentDocument(at: destinationURL)
+        present_document_at(destinationURL)
     }
     
     public func documentBrowser(_ controller: UIDocumentBrowserViewController, failedToImportDocumentAt documentURL: URL, error: Error?) {
@@ -105,7 +108,7 @@ open class BANDocumentBrowserViewController: UIDocumentBrowserViewController, UI
     // MARK: FileDocument Presentation
     public var doc_int_manager: BANDocumentInterfaceManager?
     //https://stackoverflow.com/questions/67459304/how-to-avoid-strange-behavior-when-scene-based-document-mac-catalyst-app-reopens
-    public func presentDocument(at documentURL: URL) {
+    open func present_document_at(_ documentURL: URL) {
         ALog.log_verbose("presentDocument documentURL: \(documentURL)")
         
         if !documentURL.startAccessingSecurityScopedResource() {
