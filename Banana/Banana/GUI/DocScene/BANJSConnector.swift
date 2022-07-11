@@ -10,8 +10,8 @@ import UIKit
 import WebKit
 
 open class BANJSConnector: NSObject {
-    weak var web_view: WKWebView?
-    weak var docdelegatex: BANDocumentManagerProtocol?
+    open weak var web_view: WKWebView?
+    open weak var docdelegatex: BANDocumentManagerProtocol?
     
     @MainActor
     @discardableResult func load_html(_ html: String) throws -> WKNavigation? {
@@ -69,9 +69,8 @@ extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDele
     }
     
     
-    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         let body = message.body
-        
         if message.name == "msg", let dict = message.body as? [String:Any] {
             if((dict["doc_ready"]) != nil){
                 docdelegatex?.doc_ready()
@@ -79,13 +78,6 @@ extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDele
             else if((dict["keyup"]) != nil){
                 docdelegatex?.doc_edited()
             }
-            
-            //            else if((dict["editor_ready"]) != nil){
-            //                docdelegatex?.editor_ready()
-            //            }
-            
-            //ALog.log_verbose("msg \(message.body)")
-            
         }
         else if message.name == "log", let log = message.body as? String {
             ALog.log_verbose("WKLOG \(log)")
@@ -99,9 +91,8 @@ extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDele
         }else{
             ALog.log_verbose("JS PreviewWK: Non Dict Message: \(body)")
         }
-        
     }
-    
+
     
 }
 

@@ -20,7 +20,7 @@ class BANAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        view.backgroundColor = .red
+//        view.backgroundColor = .red
         
         alertyIcon.image = Bundle.main.app_iconx // UIImage(named: "AlertWindowAppIcon")
         view.addSubview(alertyIcon)
