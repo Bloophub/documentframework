@@ -10,7 +10,6 @@ import Dynamic
 import UIKit
 
 public let pref_noty                = NSNotification.Name(rawValue: "pref_noty")
-public let pref_editor_preference   = "pref_editor_preference"
 public let pref_appearance          = "pref_appearance"
 
 open class BANPreference {
