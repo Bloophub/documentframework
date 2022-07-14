@@ -15,7 +15,7 @@ open class BANConfig{
     public init(){
         
     }
-    public var ENV                     : BANAPPENV         = .develop
+    public var ENV                     : BANAPPENV         = .production
     public var APP_GROUP               : String            = "group.com.int.TextEditor"
     public var APP_FOLDER_NAME         : String            = "BAN"
     public var APPNAME                 : String            = "APP"
