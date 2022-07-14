@@ -18,6 +18,7 @@ public protocol BANDocumentManagerProtocol: AnyObject, BANErrorProtocol {
 
     func doc_ready()
     func doc_edited()
+    func is_doc_ready() -> Bool
 
 //    func doc_root_uiviewcontroller() -> UIViewController?
 }
@@ -27,7 +28,9 @@ open class BANDocumentInterfaceManager: UIResponder {
     open var doc: BANDocument! = nil
     open var js_connector = BANJSConnector()
     open var editor_vc = BANEditorUIViewController()
+    open var is_doc_readyx = false
 
+    
     var my_next: UIResponder?
     override public var next: UIResponder? { get {
         if let my_nextx = my_next {
@@ -163,6 +166,10 @@ extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
     public func doc_edited(){
         doc.updateChangeCount(.done)
     }
+    
+    public func is_doc_ready() -> Bool {
+        is_doc_readyx
+    }
 
     public func doc_ready(){ //loaded js libs > load contant+ editor options
         Task {
@@ -171,6 +178,7 @@ extension BANDocumentInterfaceManager : BANDocumentManagerProtocol{
                 if await open_docx() == false {
                     throw BANError.error_doc
                 }
+                is_doc_readyx = true
                 try await editor_vc.editor_loaded_html(doc.get_content(), get_doc_url())
             }catch {
                 present_error(error)
