@@ -35,9 +35,13 @@ open class BANEditorUIViewController : BANBaseUIViewController {
     
     open func build_wkwebconfiguration() -> WKWebViewConfiguration {
         let webConfiguration = WKWebViewConfiguration()
-        webConfiguration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         webConfiguration.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
         webConfiguration.defaultWebpagePreferences.allowsContentJavaScript = true
+        
+        let preferences = WKPreferences()
+        preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        webConfiguration.preferences = preferences
+
         return webConfiguration
     }
 
@@ -208,8 +212,8 @@ open class BANEditorWKWebView: WKWebView {
 //        backgroundColor                             = UIColor.systemBackground
         scrollView.bounces                          = false
         scrollView.zoomScale                        = 1
-//        scrollView.maximumZoomScale                 = 1
-//        scrollView.minimumZoomScale                 = 1
+        scrollView.maximumZoomScale                 = 1
+        scrollView.minimumZoomScale                 = 1
 //        scrollView.isScrollEnabled                  = false
         scrollView.showsVerticalScrollIndicator     = false
         scrollView.showsHorizontalScrollIndicator   = false

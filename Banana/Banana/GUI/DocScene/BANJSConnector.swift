@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import WebKit
 
-open class BANJSConnector: NSObject {
+open class BANJSConnector: NSObject,WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
     open weak var web_view: WKWebView?
     open weak var docdelegatex: BANDocumentManagerProtocol?
     
@@ -37,13 +37,13 @@ open class BANJSConnector: NSObject {
     }
     
     
-    public func get_js_content() async throws -> String? {
+    open func get_js_content() async throws -> String? {
         try await run_editor_js("get_content()") as? String
     }
-}
-
-extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
-    public func unregister_connector(){
+//}
+//
+//extension BANJSConnector:  {
+    open func unregister_connector(){
         guard let wv = self.web_view else {
             self.docdelegatex?.present_error(BANError.no_webview)
             return
@@ -56,7 +56,7 @@ extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDele
         self.docdelegatex = nil 
     }
     
-    public func register_connector(_ web_view: WKWebView){
+    open func register_connector(_ web_view: WKWebView){
         self.web_view = web_view
         let contentController = web_view.configuration.userContentController
         contentController.add(self, name: "scriptlog")
@@ -94,6 +94,10 @@ extension BANJSConnector: WKScriptMessageHandler, WKUIDelegate, WKNavigationDele
     }
 
     
+//    public func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+//
+//
+//    }
 }
 
 extension BANJSConnector {
